@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    /**
+    /**login
      * Create a new AuthController instance.
      *
      * @return void
@@ -25,9 +25,8 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
 
         return $this->respondWithToken($token);
