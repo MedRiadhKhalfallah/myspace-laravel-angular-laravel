@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
+use \App\Http\Controllers\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,10 @@ Route::group([
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('signup', [AuthController::class, 'signup']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+    Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmailResset']);
+    Route::post('resetPassword', [\App\Http\Controllers\ChangePasswordController::class, 'process']);
 
 });
