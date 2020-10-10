@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\ResetPasswordController;
-
+use \App\Http\Controllers\ChangePasswordController;
+use \App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +27,7 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
     Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmailResset']);
-    Route::post('resetPassword', [\App\Http\Controllers\ChangePasswordController::class, 'process']);
+    Route::post('resetPassword', [ChangePasswordController::class, 'process']);
+    Route::get('getUsers', [UserController::class, 'getData']);
 
 });
