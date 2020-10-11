@@ -22,12 +22,20 @@ Route::group([
 ], function ($router) {
 
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('signup', [AuthController::class, 'signup']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
     Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmailResset']);
     Route::post('resetPassword', [ChangePasswordController::class, 'process']);
+
+});
+Route::group([
+
+    'middleware' => 'auth.jwt',
+], function ($router) {
+
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
     Route::get('getUsers', [UserController::class, 'getData']);
+    Route::resource('users', UserController::class);
 
 });
