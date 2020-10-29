@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
@@ -79,17 +81,19 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+//            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $this->me(),
-            'roles' => auth()->user()->roles()->get()->toArray()
+            'roles' => auth()->user()->getRoleNames()
 
         ]);
     }
 
     public function signup(SignUpRequest $request)
     {
+        /** @var User $user */
        $user= User::create($request->all());
-
+//        $user->givePermissionTo(['api'=>'show users']);
+        $user->assignRole('admin');
      return  $this->login($request);
     }
 }

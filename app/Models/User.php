@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use http\Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,11 +21,22 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
+        'id',
         'nom',
         'prenom',
         'telephone',
         'email',
-        'password',
+        'image_profile_path',
+        'image_profile_name',
+        'image_coverture_path',
+        'image_coverture_name',
+        'etat',
+        'username',
+        'site_web',
+        'site_fb',
+        'sex',
+        'description',
+        'date_de_naissance',
     ];
 
     /**
@@ -69,10 +83,10 @@ class User extends Authenticatable implements JWTSubject
         $this->attributes['password'] = bcrypt($value);
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+    /*    public function roles()
+        {
+            return $this->belongsToMany(Role::class);
+        }*/
 
     public function hasAnyRoles($roles)
     {
@@ -90,6 +104,40 @@ class User extends Authenticatable implements JWTSubject
         } else {
             return false;
         }
+    }
+
+    public function getNomAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function getPrenomAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function setNomAttribute($value)
+    {
+        return $this->attributes['nom'] = strtolower($value);
+    }
+
+    public function setPrenomAttribute($value)
+    {
+        return $this->attributes['prenom'] = strtolower($value);
+    }
+
+    public function isExiste($user){
+        if (User::where('email', '=', Input::get('email'))->exists()) {
+            throw new \Exception('Utilisateur exixte',403);
+        }
+    }
+    public function getImageProfilePathAttribute($value)
+    {
+        return url('/').'/storage/profiles_images/'.$value;
+    }
+    public function getImageCoverturePathAttribute($value)
+    {
+        return url('/').'/storage/covertures_images/'.$value;
     }
 
 }
