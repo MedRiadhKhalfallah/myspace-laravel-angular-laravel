@@ -58,6 +58,7 @@ class UserController extends Controller
      */
     public function getEntity(User $user)
     {
+        var_dump("here");
         return $user;
 
     }
@@ -69,7 +70,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user;
+        return $user->load('roles');
+//        return $user::with('roles')->get();
 
     }
 

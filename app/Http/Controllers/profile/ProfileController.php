@@ -40,7 +40,7 @@ class ProfileController extends Controller
      * @param Profile $profile
      * @return  Profile $profile
      */
-    public function show(Profile $profile)
+    public function show(User $profile)
     {
         return $profile;
     }
@@ -55,7 +55,10 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request, User $user)
     {
+        /** @var User $user */
         $user = User::where('id', $request->input('id'))->first();
+        /** @var User $userAuth */
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
         if ($user && auth()->user()->getAuthIdentifier() === $user->id) {
             $res = $user->update([
                 'nom' => $request->input('nom'),
@@ -70,22 +73,29 @@ class ProfileController extends Controller
                 'etat' => $request->input('etat'),
                 'updated_at' => $request->input('updated_at'),
             ]);
-            if ($res) {
-                return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
-            } else {
-                return response()->json(['error' => 'Echec creation utilisateur'], 400);
-            }
+
+        } elseif ($user && $userAuth && $userAuth->hasRole('admin')) {
+            //add role update
+            $res = $user->update([
+                'nom' => $request->input('nom'),
+                'prenom' => $request->input('prenom'),
+                'telephone' => $request->input('telephone'),
+                'username' => $request->input('username'),
+                'site_web' => $request->input('site_web'),
+                'site_fb' => $request->input('site_fb'),
+                'sex' => $request->input('sex'),
+                'description' => $request->input('description'),
+                'date_de_naissance' => $request->input('date_de_naissance'),
+                'etat' => $request->input('etat'),
+                'updated_at' => $request->input('updated_at'),
+            ]);
 
         }
-
-
-        /*        $res = $marque->update($request->all());
-                if ($res) {
-                    return response()->json(['message' => 'Utilisateur modifier avec succee'], 200);
-                } else {
-                    return response()->json(['error' => 'Echec modification utilisateur'], 400);
-                }*/
-
+        if ($res) {
+            return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
+        } else {
+            return response()->json(['error' => 'Echec creation utilisateur'], 400);
+        }
     }
 
     /**
@@ -143,6 +153,7 @@ class ProfileController extends Controller
 
         }
     }
+
     /**
      * Update the specified resource in storage.
      *

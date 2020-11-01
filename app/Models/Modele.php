@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Modele;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use \App\Marque;
 
-class Marque extends Model
+class Modele extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,11 +15,13 @@ class Marque extends Model
      */
     protected $fillable = [
         'name',
-        'selectedFile',
-        'etat',
-        'image_path',
-        'image_name'
+        'marque_id'
     ];
+
+    public function marque()
+    {
+        return $this->belongsTo(Marque::class);
+    }
 
     public function getNameAttribute($value)
     {
@@ -33,26 +35,20 @@ class Marque extends Model
 
     public static function isExiste($request)
     {
-        if (Marque::where('name', '=', strtolower($request->name))->exists()) {
-           return response()->json(['message' => 'Marque existe'], 403);
+        if (Modele::where('name', '=', strtolower($request->name))->exists()) {
+           return response()->json(['message' => 'Modele existe'], 403);
         }else{
             return false;
         }
     }
 
-    public function modeles()
-    {
-        return $this->hasMany(Modele::class);
-    }
-
     public function format()
     {
         return [
-            'marque_id' => $this->id,
-            'marque_name' => $this->name,
-            'etat' => $this->etat,
-            'image_path' => url('/').'/storage/marques_images/'.$this->image_path,
-            'image_name' => $this->image_name
+            'marque_id' => $this->marque->id,
+            'modele_id' => $this->id,
+            'modele_name' => $this->name,
+            'etat' => $this->etat
         ];
 
     }

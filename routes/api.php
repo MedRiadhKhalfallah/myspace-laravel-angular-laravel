@@ -9,6 +9,8 @@ use \App\Http\Controllers\UserRoleController;
 use \App\Http\Controllers\marque\MarqueController;
 use \App\Http\Controllers\marque\MarqueSearchController;
 use \App\Http\Controllers\profile\ProfileController;
+use \App\Http\Controllers\modele\ModeleController;
+use \App\Http\Controllers\modele\ModeleSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +46,8 @@ Route::group([
     Route::get('getUsersRoles', [UserRoleController::class, 'getData'])->middleware('role:admin');
     Route::resource('users', UserController::class)->middleware('role:admin|utilisateur');
     Route::resource('marques', MarqueController::class)->middleware('role:admin');
+    Route::resource('modeles', ModeleController::class)->middleware('role:admin');
+    Route::resource('modeleSearch', ModeleSearchController::class)->middleware('role:admin');
     Route::resource('marqueSearch', MarqueSearchController::class)->middleware('role:admin');
     Route::resource('profile', ProfileController::class);
     Route::put('profile/password/{id}', [ProfileController::class, 'updatePassword']);

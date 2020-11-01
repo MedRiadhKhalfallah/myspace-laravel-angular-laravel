@@ -141,7 +141,7 @@ class MarqueController extends Controller
     public function destroy(Marque $marque)
     {
         // delete foreign entity
-//        $marque->modeles->each->delete();
+        $marque->modeles->each->delete();
 
         $res = $marque->delete();
         if ($res) {
