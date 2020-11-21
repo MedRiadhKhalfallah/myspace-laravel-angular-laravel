@@ -11,6 +11,10 @@ use \App\Http\Controllers\marque\MarqueSearchController;
 use \App\Http\Controllers\profile\ProfileController;
 use \App\Http\Controllers\modele\ModeleController;
 use \App\Http\Controllers\modele\ModeleSearchController;
+use \App\Http\Controllers\categorie\CategorieController;
+use \App\Http\Controllers\sousCategorie\SousCategorieController;
+use \App\Http\Controllers\produit\ProduitSearchController;
+use \App\Http\Controllers\produit\ProduitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +53,14 @@ Route::group([
     Route::resource('modeles', ModeleController::class)->middleware('role:admin');
     Route::resource('modeleSearch', ModeleSearchController::class)->middleware('role:admin');
     Route::resource('marqueSearch', MarqueSearchController::class)->middleware('role:admin');
+    Route::resource('produits', ProduitController::class);
+    Route::resource('produitSearch', ProduitSearchController::class);
+    Route::resource('images',ImageController::class);
+
     Route::resource('profile', ProfileController::class);
+    Route::resource('categories', CategorieController::class);
+    Route::resource('sousCategories', SousCategorieController::class);
+
     Route::put('profile/password/{id}', [ProfileController::class, 'updatePassword']);
     Route::patch('profile/profile-image/{id}', [ProfileController::class, 'updateProfileImage']);
     Route::patch('profile/coverture-image/{id}', [ProfileController::class, 'updateCovertureImage']);

@@ -24,8 +24,8 @@ class SignUpRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom'=>'required|min:4|max:255|regex:/(^([a-zA-Z]+)$)/u',
-            'prenom'=>'required|min:4|max:255|regex:/(^([a-zA-Z]+)$)/u',
+            'nom'=>'required|min:4|max:255|regex:/(^([a-zA-Z ]+)$)/u',
+            'prenom'=>'required|min:4|max:255|regex:/(^([a-zA-Z ]+)$)/u',
             'telephone'=>'required|min:8|max:8',
             'email'=>'required|email|unique:users',
             'password'=>'required|confirmed|min:8|max:255',

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use \App\Marque;
+use \App\Models\Marque;
 
 class Modele extends Model
 {
@@ -15,6 +15,7 @@ class Modele extends Model
      */
     protected $fillable = [
         'name',
+        'etat',
         'marque_id'
     ];
 
@@ -44,8 +45,9 @@ class Modele extends Model
 
     public function format()
     {
+//        return $this;
         return [
-            'marque_id' => $this->marque->id,
+            'marque' => $this->marque,
             'modele_id' => $this->id,
             'modele_name' => $this->name,
             'etat' => $this->etat

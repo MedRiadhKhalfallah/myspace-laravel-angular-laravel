@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ModeleCreateRequest;
 use App\Image;
 use App\Models\Modele;
+use App\Models\User;
 use JWTAuth;
 
 class ModeleController extends Controller
@@ -42,13 +43,21 @@ class ModeleController extends Controller
             return Modele::isExiste($request);
         }
 
+        /** @var User $userAuth */
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+        if ($userAuth && $userAuth->hasRole('admin')) {
+            $request->merge(array('etat' => true));
+        } else {
+            $request->merge(array('etat' => false));
+        }
+
         $res = Modele::create($request->all());
 
-            if ($res) {
-                return response()->json(['message' => 'modele cree avec succee'], 200);
-            } else {
-                return response()->json(['error' => 'Echec creation modele'], 400);
-            }
+        if ($res) {
+            return response()->json(['message' => 'modele cree avec succee'], 200);
+        } else {
+            return response()->json(['error' => 'Echec creation modele'], 400);
+        }
 
     }
 
@@ -75,11 +84,11 @@ class ModeleController extends Controller
     {
         $res = $modele->update($request->all());
 
-            if ($res) {
-                return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
-            } else {
-                return response()->json(['error' => 'Echec creation utilisateur'], 400);
-            }
+        if ($res) {
+            return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
+        } else {
+            return response()->json(['error' => 'Echec creation utilisateur'], 400);
+        }
 
     }
 

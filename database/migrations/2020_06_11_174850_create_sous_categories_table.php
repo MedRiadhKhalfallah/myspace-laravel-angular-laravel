@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModelesTable extends Migration
+class CreateSousCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateModelesTable extends Migration
      */
     public function up()
     {
-        Schema::create('modeles', function (Blueprint $table) {
+        Schema::create('sous_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('etat')->nullable();
-            $table->unsignedBigInteger('marque_id');
-            $table->foreign('marque_id')->references('id')->on('marques');
-
+            $table->text('description')->nullable();
+            $table->boolean('etat')->default(true);
+            $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('categorie_id');
+            $table->foreign('categorie_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateModelesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modeles');
+        Schema::dropIfExists('sous_categories');
     }
 }
