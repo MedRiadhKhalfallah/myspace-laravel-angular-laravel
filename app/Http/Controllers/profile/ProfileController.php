@@ -69,13 +69,13 @@ class ProfileController extends Controller
                 'site_fb' => $request->input('site_fb'),
                 'sex' => $request->input('sex'),
                 'description' => $request->input('description'),
-                'date_de_naissance' => $request->input('date_de_naissance'),
+                'date_de_naissance' => date("Y-m-d", strtotime($request->input('date_de_naissance')) + 7200),
                 'etat' => $request->input('etat'),
                 'updated_at' => $request->input('updated_at'),
             ]);
 
         } elseif ($user && $userAuth && $userAuth->hasRole('admin')) {
-            //add role update
+            // update date with admin
             $res = $user->update([
                 'nom' => $request->input('nom'),
                 'prenom' => $request->input('prenom'),
@@ -85,7 +85,7 @@ class ProfileController extends Controller
                 'site_fb' => $request->input('site_fb'),
                 'sex' => $request->input('sex'),
                 'description' => $request->input('description'),
-                'date_de_naissance' => $request->input('date_de_naissance'),
+                'date_de_naissance' => date("Y-m-d", strtotime($request->input('date_de_naissance')) + 7200),
                 'etat' => $request->input('etat'),
                 'updated_at' => $request->input('updated_at'),
             ]);
@@ -110,10 +110,18 @@ class ProfileController extends Controller
         $user_id = Auth::User()->id;
         $obj_user = User::find($user_id);
         $res = null;
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+
         if ($request->input('password') !== $request->input('password_confirmation')) {
             return response()->json(['message' => 'mot de passe non conforme'], 400);
         }
         if (Hash::check($request->input('oldPassword'), Auth::user()->password)) {
+            $obj_user->password = $request->input('password');
+            $obj_user->save();
+            return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
+        } elseif ($userAuth && $userAuth->hasRole('admin')) {
+            // update date with admin
+            $obj_user = User::find($id);
             $obj_user->password = $request->input('password');
             $obj_user->save();
             return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
@@ -129,9 +137,39 @@ class ProfileController extends Controller
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
+    public function updateRoles(Request $request, $id)
+    {
+        /** @var User $userAuth */
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+        if ($userAuth && $userAuth->hasRole('admin')) {
+            $obj_user = User::find($id);
+            if ($obj_user->email == 'mrk19933@gmail.com') {
+                return response()->json(['error' => 'vous n\'avez pas le droit de modifier cette utilisateur'], 401);
+            }
+            $res = $obj_user->syncRoles($request->all());
+            if ($res) {
+                return response()->json(['message' => 'Utilisateur update avec succee'], 200);
+            } else {
+                return response()->json(['error' => 'Echec update utilisateur'], 400);
+            }
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param ProfileUpdateRequest $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateProfileImage(Request $request, $id)
     {
-        $user_id = Auth::User()->id;
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+        if ($userAuth && $userAuth->hasRole('admin')) {
+            $user_id = $id;
+        } else {
+            $user_id = Auth::User()->id;
+        }
         $obj_user = User::find($user_id);
         $res = null;
         if ($request->hasFile('selectedFile')) {
@@ -163,7 +201,13 @@ class ProfileController extends Controller
      */
     public function updateCovertureImage(Request $request, $id)
     {
-        $user_id = Auth::User()->id;
+        $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+        if ($userAuth && $userAuth->hasRole('admin')) {
+            $user_id = $id;
+        } else {
+            $user_id = Auth::User()->id;
+        }
+
         $obj_user = User::find($user_id);
         $res = null;
         if ($request->hasFile('selectedFile')) {
@@ -186,5 +230,20 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Modele $modele
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(User $profile)
+    {
+        $res = $profile->delete();
+        if ($res) {
+            return response()->json(['message' => 'Utilisateur supprimé avec succee'], 200);
+        } else {
+            return response()->json(['error' => 'Echec supprimé utilisateur'], 400);
+        }
+    }
 
 }

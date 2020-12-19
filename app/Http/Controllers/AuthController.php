@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','signup']]);
+        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
     }
 
     /**
@@ -33,7 +33,11 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
-
+        $credentials['etat'] = true;
+        if (!auth()->validate($credentials)) {
+            auth()->logout();
+            return response()->json(['error' => 'votre compte est desactivé'], 401);
+        }
         return $this->respondWithToken($token);
     }
 
@@ -91,9 +95,9 @@ class AuthController extends Controller
     public function signup(SignUpRequest $request)
     {
         /** @var User $user */
-       $user= User::create($request->all());
+        $user = User::create($request->all());
 //        $user->givePermissionTo(['api'=>'show users']);
-        $user->assignRole('admin');
-     return  $this->login($request);
+        $user->assignRole('utilisateur');
+        return $this->login($request);
     }
 }
