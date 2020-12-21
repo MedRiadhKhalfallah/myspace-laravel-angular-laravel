@@ -128,18 +128,27 @@ class User extends Authenticatable implements JWTSubject
         return $this->attributes['prenom'] = strtolower($value);
     }
 
-    public function isExiste($user){
+    public function isExiste($user)
+    {
         if (User::where('email', '=', Input::get('email'))->exists()) {
-            throw new \Exception('Utilisateur exixte',403);
+            throw new \Exception('Utilisateur exixte', 403);
         }
     }
+
     public function getImageProfilePathAttribute($value)
     {
-        return url('/').'/storage/profiles_images/'.$value;
+        return url('/') . '/storage/profiles_images/' . $value;
     }
+
     public function getImageCoverturePathAttribute($value)
     {
-        return url('/').'/storage/covertures_images/'.$value;
+        return url('/') . '/storage/covertures_images/' . $value;
+    }
+
+    public function format()
+    {
+        return $this->jsonSerialize();
+
     }
 
 }

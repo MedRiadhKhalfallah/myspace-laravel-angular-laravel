@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\ResetPasswordController;
 use \App\Http\Controllers\ChangePasswordController;
-use \App\Http\Controllers\UserController;
+//use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\user\UserController;
+use \App\Http\Controllers\user\UserSearchController;
 use \App\Http\Controllers\UserRoleController;
 use \App\Http\Controllers\marque\MarqueController;
 use \App\Http\Controllers\marque\MarqueSearchController;
@@ -48,7 +50,7 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
     Route::get('getUsers', [UserController::class, 'getData'])->middleware('role:admin');
     Route::get('getUsersRoles', [UserRoleController::class, 'getData'])->middleware('role:admin');
-    Route::resource('users', UserController::class)->middleware('role:admin|utilisateur');
+//    Route::resource('users', UserController::class)->middleware('role:admin|utilisateur');
     Route::resource('marques', MarqueController::class)->middleware('role:admin');
     Route::resource('modeles', ModeleController::class)->middleware('role:admin');
     Route::resource('modeleSearch', ModeleSearchController::class)->middleware('role:admin');
@@ -61,5 +63,7 @@ Route::group([
     Route::patch('profile/profile-image/{id}', [ProfileController::class, 'updateProfileImage']);
     Route::patch('profile/coverture-image/{id}', [ProfileController::class, 'updateCovertureImage']);
     Route::post('profile/sendMailVerificationLink', [MailVerificationController::class, 'sendEmailVerification']);
+    Route::resource('users', UserController::class)->middleware('role:admin');
+    Route::resource('userSearch', UserSearchController::class)->middleware('role:admin');
 
 });
