@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" showDifferentInSync="false">
+    <serverData>
+      <paths name="mts">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/deal/myapp" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/angular" local="$PROJECT_DIR$/../frontend/dist/frontend" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/deal/myapp/node_modules" />
+            <excludedPath path="/deal/myapp/vendor" />
+            <excludedPath path="/deal/myapp/storage" />
+            <excludedPath path="/deal/myapp/tests" />
+            <excludedPath path="/deal/myapp/resources/css" />
+            <excludedPath path="/deal/myapp/resources/js" />
+            <excludedPath path="/deal/myapp/resources/lang" />
+            <excludedPath path="/deal/myapp/bootstrap" />
+            <excludedPath path="/deal/myapp/.env" />
+            <excludedPath path="/deal/myapp/README.md" />
+            <excludedPath path="/deal/myapp/phpunit.xml" />
+            <excludedPath path="/deal/myapp/server.php" />
+            <excludedPath path="/deal/myapp/webpack.mix.js" />
+            <excludedPath path="/deal/myapp/artisan" />
+            <excludedPath path="/deal/myapp/.env.example" />
+            <excludedPath path="/deal/myapp/public" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

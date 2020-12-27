@@ -11,7 +11,7 @@ class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
     private $token;
-    private $baseUrl = "http://localhost:4200";
+    private $baseUrl;
 
     /**
      * Create a new message instance.
@@ -20,6 +20,7 @@ class ResetPasswordMail extends Mailable
      */
     public function __construct($token)
     {
+        $this->baseUrl = config('front.FRONT_URL');
         $this->token = $token;
     }
 
@@ -31,6 +32,6 @@ class ResetPasswordMail extends Mailable
     public
     function build()
     {
-        return $this->markdown('Email.passwordReset')->with(['token' => $this->token,'url'=>$this->baseUrl.'/response-password-reset?token='.$this->token]);
+        return $this->markdown('Email.passwordReset')->with(['token' => $this->token, 'url' => $this->baseUrl . '/response-password-reset?token=' . $this->token]);
     }
 }

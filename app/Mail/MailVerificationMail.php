@@ -11,7 +11,7 @@ class MailVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
     private $token;
-    private $baseUrl = "http://localhost:4200";
+    private $baseUrl;
 
     /**
      * Create a new message instance.
@@ -20,6 +20,7 @@ class MailVerificationMail extends Mailable
      */
     public function __construct($token)
     {
+        $this->baseUrl = config('front.FRONT_URL');
         $this->token = $token;
     }
 
