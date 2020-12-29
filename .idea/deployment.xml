@@ -5,7 +5,7 @@
       <paths name="mts">
         <serverdata>
           <mappings>
-            <mapping deploy="/deal/myapp" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/deal/front" local="$PROJECT_DIR$" web="/" />
             <mapping deploy="/angular" local="$PROJECT_DIR$/../frontend/dist/frontend" />
           </mappings>
           <excludedPaths>
@@ -25,6 +25,17 @@
             <excludedPath path="/deal/myapp/artisan" />
             <excludedPath path="/deal/myapp/.env.example" />
             <excludedPath path="/deal/myapp/public" />
+            <excludedPath path="/deal/front/vendor" />
+            <excludedPath path="/deal/front/tests" />
+            <excludedPath path="/deal/front/node_modules" />
+            <excludedPath path="/deal/front/webpack.mix.js" />
+            <excludedPath path="/deal/front/server.php" />
+            <excludedPath path="/deal/front/README.md" />
+            <excludedPath path="/deal/front/phpunit.xml" />
+            <excludedPath path="/deal/front/.env" />
+            <excludedPath path="/deal/front/.env.example" />
+            <excludedPath path="/deal/front/.editorconfig" />
+            <excludedPath path="/deal/front/bootstrap" />
           </excludedPaths>
         </serverdata>
       </paths>

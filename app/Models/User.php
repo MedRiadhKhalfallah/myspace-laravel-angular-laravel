@@ -137,12 +137,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function getImageProfilePathAttribute($value)
     {
-        return url('/') . '/storage/profiles_images/' . $value;
+        return url('/') .config('front.STORAGE_URL'). '/profiles_images/' . $value;
     }
 
     public function getImageCoverturePathAttribute($value)
     {
-        return url('/') . '/storage/covertures_images/' . $value;
+        return url('/') . config('front.STORAGE_URL').'/covertures_images/' . $value;
     }
 
     public function format()

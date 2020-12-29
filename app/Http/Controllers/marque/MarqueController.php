@@ -98,21 +98,21 @@ class MarqueController extends Controller
      */
     public function update(MarqueCreateRequest $request, Marque $marque)
     {
+        $updateData=[];
         if ($request->hasFile('selectedFile')) {
             $fileNameExtension = $request->file('selectedFile')->getClientOriginalName();
             $fileName = pathinfo($fileNameExtension, PATHINFO_FILENAME);
             $extension = pathinfo($fileNameExtension, PATHINFO_EXTENSION);
             $fileNameUnique = $fileName . '_' . Carbon::now()->timestamp . '.' . $extension;
             $request->file('selectedFile')->storeAs('marques_images', $fileNameUnique, 'public');
+            $updateData['image_name']=$fileName;
+            $updateData['image_path']=$fileNameUnique;
+        }
+        $updateData['name']=$request->input('name');
+        $updateData['etat']=$request->input('etat');
+        $updateData['updated_at']=$request->input('updated_at');
 
-            $res = $marque->update([
-                'name' => $request->input('name'),
-                'image_name' => $fileName,
-                'image_path' => $fileNameUnique,
-                'etat' =>$request->input('etat'),
-                'updated_at' =>$request->input('updated_at'),
-                'created_at' =>$request->input('created_at')
-            ]);
+        $res = $marque->update($updateData);
 
             if ($res) {
                 return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
@@ -120,7 +120,7 @@ class MarqueController extends Controller
                 return response()->json(['error' => 'Echec creation utilisateur'], 400);
             }
 
-        }
+
 
 
 /*        $res = $marque->update($request->all());
@@ -141,7 +141,7 @@ class MarqueController extends Controller
     public function destroy(Marque $marque)
     {
         // delete foreign entity
-        $marque->modeles->each->delete();
+//        $marque->modeles->each->delete();
 
         $res = $marque->delete();
         if ($res) {
