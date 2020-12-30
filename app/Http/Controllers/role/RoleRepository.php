@@ -8,8 +8,18 @@ use App\Models\Role;
 
 class RoleRepository
 {
+    private $offset = 0;
+    private $limit = 50;
+
     public function searchWithCriteria($criteria)
     {
+        if (isset($criteria['offset'])) {
+            $this->offset = $criteria['offset'];
+        }
+        if (isset($criteria['limit']) && $criteria['limit'] < 50) {
+            $this->limit = $criteria['limit'];
+        }
+
         $qr = Role::orderBy('name');
 //        return $criteria;
         foreach ($criteria as $key => $value) {
@@ -22,7 +32,7 @@ class RoleRepository
 
             }
         }
-        return $qr->get()
+        return $qr->offset($this->offset)->limit($this->limit)->get()
             ->map->format();
         /*        $roles = $qr->get()
                     ->map(function ($role) {
