@@ -26,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'prenom',
         'telephone',
         'email',
+        'password',
         'image_profile_path',
         'image_profile_name',
         'image_coverture_path',
@@ -37,6 +38,7 @@ class User extends Authenticatable implements JWTSubject
         'sex',
         'description',
         'date_de_naissance',
+        'email_verified_at'
     ];
 
     /**
@@ -126,18 +128,27 @@ class User extends Authenticatable implements JWTSubject
         return $this->attributes['prenom'] = strtolower($value);
     }
 
-    public function isExiste($user){
+    public function isExiste($user)
+    {
         if (User::where('email', '=', Input::get('email'))->exists()) {
-            throw new \Exception('Utilisateur exixte',403);
+            throw new \Exception('Utilisateur exixte', 403);
         }
     }
+
     public function getImageProfilePathAttribute($value)
     {
-        return url('/').'/storage/profiles_images/'.$value;
+        return url('/') .config('front.STORAGE_URL'). '/profiles_images/' . $value;
     }
+
     public function getImageCoverturePathAttribute($value)
     {
-        return url('/').'/storage/covertures_images/'.$value;
+        return url('/') . config('front.STORAGE_URL').'/covertures_images/' . $value;
+    }
+
+    public function format()
+    {
+        return $this->jsonSerialize();
+
     }
 
 }

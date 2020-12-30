@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Http\Controllers\marque;
+namespace App\Http\Controllers\role;
 
 
-use App\Models\Marque;
+use App\Models\Role;
 
-class MarqueRepository
+class RoleRepository
 {
     private $offset = 0;
     private $limit = 50;
@@ -19,7 +19,8 @@ class MarqueRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-        $qr = Marque::orderBy('name');
+
+        $qr = Role::orderBy('name');
 //        return $criteria;
         foreach ($criteria as $key => $value) {
             if ($value != null) {
@@ -33,27 +34,27 @@ class MarqueRepository
         }
         return $qr->offset($this->offset)->limit($this->limit)->get()
             ->map->format();
-        /*        $marques = $qr->get()
-                    ->map(function ($marque) {
-                        return  $marque->format();
+        /*        $roles = $qr->get()
+                    ->map(function ($role) {
+                        return  $role->format();
                     });*/
 
-        /*        ->map(function ($marque){
+        /*        ->map(function ($role){
                     return[
-                        'marque_id'=>$marque->id,
-                        'marque_name'=>$marque->name,
-                        'modele_id'=>$marque->model->id,
-                        'modele_nale'=>$marque->model->name
+                        'role_id'=>$role->id,
+                        'role_name'=>$role->name,
+                        'modele_id'=>$role->model->id,
+                        'modele_nale'=>$role->model->name
                     ];
                 });*/
 
     }
 
-    /*    protected function format($marque)
+    /*    protected function format($role)
         {
             return [
-                'marque_id' => $marque->id,
-                'marque_name' => $marque->name
+                'role_id' => $role->id,
+                'role_name' => $role->name
             ];
 
         }*/

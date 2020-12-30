@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ResetPasswordMail extends Mailable
+class MailVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
     private $token;
@@ -32,6 +32,6 @@ class ResetPasswordMail extends Mailable
     public
     function build()
     {
-        return $this->markdown('Email.passwordReset')->with(['token' => $this->token, 'url' => $this->baseUrl . '/response-password-reset?token=' . $this->token]);
+        return $this->markdown('Email.mailVerification')->with(['token' => $this->token,'url'=>$this->baseUrl.'/response-mail-verification?token='.$this->token]);
     }
 }

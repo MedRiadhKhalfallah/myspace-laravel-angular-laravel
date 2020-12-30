@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\marque;
+namespace App\Http\Controllers\role;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MarqueCreateRequest;
+use App\Http\Requests\RoleCreateRequest;
 use App\Image;
-use App\Models\Marque;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use JWTAuth;
 
-class MarqueController extends Controller
+class RoleController extends Controller
 {
     protected $user;
 
@@ -29,19 +29,19 @@ class MarqueController extends Controller
      */
     public function index()
     {
-        return Marque::all();
+        return Role::all();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param MarqueCreateRequest $request
+     * @param RoleCreateRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(MarqueCreateRequest $request)
+    public function store(RoleCreateRequest $request)
     {
-        if (Marque::isExiste($request) !== false) {
-            return Marque::isExiste($request);
+        if (Role::isExiste($request) !== false) {
+            return Role::isExiste($request);
         }
 
         if ($request->hasFile('selectedFile')) {
@@ -49,9 +49,9 @@ class MarqueController extends Controller
             $fileName = pathinfo($fileNameExtension, PATHINFO_FILENAME);
             $extension = pathinfo($fileNameExtension, PATHINFO_EXTENSION);
             $fileNameUnique = $fileName . '_' . Carbon::now()->timestamp . '.' . $extension;
-            $request->file('selectedFile')->storeAs('marques_images', $fileNameUnique, 'public');
+            $request->file('selectedFile')->storeAs('roles_images', $fileNameUnique, 'public');
 
-            $res = Marque::create([
+            $res = Role::create([
                 'name' => $request->input('name'),
                 'image_name' => $fileName,
                 'image_path' => $fileNameUnique,
@@ -80,39 +80,39 @@ class MarqueController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Marque $marque
-     * @return  marque $marque
+     * @param Role $role
+     * @return  role $role
      */
-    public function show(Marque $marque)
+    public function show(Role $role)
     {
-        return $marque;
+        return $role;
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param MarqueCreateRequest $request
-     * @param Marque $marque
+     * @param RoleCreateRequest $request
+     * @param Role $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(MarqueCreateRequest $request, Marque $marque)
+    public function update(RoleCreateRequest $request, Role $role)
     {
-        $updateData=[];
         if ($request->hasFile('selectedFile')) {
             $fileNameExtension = $request->file('selectedFile')->getClientOriginalName();
             $fileName = pathinfo($fileNameExtension, PATHINFO_FILENAME);
             $extension = pathinfo($fileNameExtension, PATHINFO_EXTENSION);
             $fileNameUnique = $fileName . '_' . Carbon::now()->timestamp . '.' . $extension;
-            $request->file('selectedFile')->storeAs('marques_images', $fileNameUnique, 'public');
-            $updateData['image_name']=$fileName;
-            $updateData['image_path']=$fileNameUnique;
-        }
-        $updateData['name']=$request->input('name');
-        $updateData['etat']=$request->input('etat');
-        $updateData['updated_at']=$request->input('updated_at');
+            $request->file('selectedFile')->storeAs('roles_images', $fileNameUnique, 'public');
 
-        $res = $marque->update($updateData);
+            $res = $role->update([
+                'name' => $request->input('name'),
+                'image_name' => $fileName,
+                'image_path' => $fileNameUnique,
+                'etat' =>$request->input('etat'),
+                'updated_at' =>$request->input('updated_at'),
+                'created_at' =>$request->input('created_at')
+            ]);
 
             if ($res) {
                 return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
@@ -120,10 +120,10 @@ class MarqueController extends Controller
                 return response()->json(['error' => 'Echec creation utilisateur'], 400);
             }
 
+        }
 
 
-
-/*        $res = $marque->update($request->all());
+/*        $res = $role->update($request->all());
         if ($res) {
             return response()->json(['message' => 'Utilisateur modifier avec succee'], 200);
         } else {
@@ -135,15 +135,15 @@ class MarqueController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Marque $marque
+     * @param Role $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Marque $marque)
+    public function destroy(Role $role)
     {
         // delete foreign entity
-//        $marque->modeles->each->delete();
+        $role->modeles->each->delete();
 
-        $res = $marque->delete();
+        $res = $role->delete();
         if ($res) {
             return response()->json(['message' => 'Utilisateur modifier avec succee'], 200);
         } else {

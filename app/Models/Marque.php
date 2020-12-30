@@ -51,7 +51,7 @@ class Marque extends Model
             'marque_id' => $this->id,
             'marque_name' => $this->name,
             'etat' => $this->etat,
-            'image_path' => url('/').'/storage/marques_images/'.$this->image_path,
+            'image_path' => url('/').config('front.STORAGE_URL').'/marques_images/'.$this->image_path,
             'image_name' => $this->image_name
         ];
 
