@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" showDifferentInSync="false">
+  <component name="PublishConfigData" showDifferentInSync="false" showExcludedInSync="true">
     <serverData>
       <paths name="mts">
         <serverdata>
           <mappings>
             <mapping deploy="/deal/front" local="$PROJECT_DIR$" web="/" />
-            <mapping deploy="/angular" local="$PROJECT_DIR$/../frontend/dist/frontend" />
           </mappings>
           <excludedPaths>
             <excludedPath path="/deal/myapp/node_modules" />
@@ -36,6 +35,7 @@
             <excludedPath path="/deal/front/.env.example" />
             <excludedPath path="/deal/front/.editorconfig" />
             <excludedPath path="/deal/front/bootstrap" />
+            <excludedPath path="/deal/front/storage" />
           </excludedPaths>
         </serverdata>
       </paths>

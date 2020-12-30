@@ -8,8 +8,18 @@ use App\Models\Modele;
 
 class ModeleRepository
 {
+    private $offset = 0;
+    private $limit = 50;
+
     public function searchWithCriteria($criteria)
     {
+        if (isset($criteria['offset'])) {
+            $this->offset = $criteria['offset'];
+        }
+        if (isset($criteria['limit']) && $criteria['limit'] < 50) {
+            $this->limit = $criteria['limit'];
+        }
+
         $qr = Modele::orderBy('name');
 //        return $criteria;
         foreach ($criteria as $key => $value) {
@@ -22,7 +32,7 @@ class ModeleRepository
 
             }
         }
-        return $qr->get()
+        return $qr->offset($this->offset)->limit($this->limit)->get()
             ->map->format();
         /*        $marques = $qr->get()
                     ->map(function ($marque) {
