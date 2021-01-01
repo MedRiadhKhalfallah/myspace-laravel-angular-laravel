@@ -150,5 +150,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->jsonSerialize();
 
     }
+    public function getEtat()
+    {
+        return $this->etat;
+
+    }
 
 }
