@@ -42,7 +42,7 @@ Route::group([
 });
 Route::group([
 
-    'middleware' => 'auth.jwt'
+    'middleware' => ['auth.jwt','active_user'],
 ], function ($router) {
 
     Route::post('logout', [AuthController::class, 'logout']);
@@ -54,7 +54,7 @@ Route::group([
     Route::resource('marques', MarqueController::class)->middleware('role:admin');
     Route::resource('modeles', ModeleController::class)->middleware('role:admin');
     Route::resource('modeleSearch', ModeleSearchController::class)->middleware('role:admin');
-    Route::resource('marqueSearch', MarqueSearchController::class)->middleware('role:admin');
+    Route::resource('marqueSearch', MarqueSearchController::class)->middleware('role:admin')->middleware('active_user');
     Route::resource('profile', ProfileController::class);
     Route::resource('roles', RoleController::class)->middleware('role:admin');
     Route::resource('roleSearch', RoleSearchController::class)->middleware('role:admin');
