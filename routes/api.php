@@ -16,6 +16,7 @@ use \App\Http\Controllers\modele\ModeleSearchController;
 use \App\Http\Controllers\role\RoleController;
 use \App\Http\Controllers\role\RoleSearchController;
 use \App\Http\Controllers\MailVerificationController;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +33,18 @@ Route::group([
 
     'middleware' => 'api',
 ], function ($router) {
+    //google login
+/*    Route::get('login/google',[AuthController::class, 'redirectToGoogle']);
+    Route::get('login/google/callback',[AuthController::class, 'handleGoogleCallback']);*/
+    //facebook login
+    Route::get('login/facebook',[AuthController::class, 'redirectToFacebook']);
+    Route::get('login/facebook/callback',[AuthController::class, 'handleFacebookCallback']);
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('signup', [AuthController::class, 'signup']);
     Route::post('sendPasswordResetLink', [ResetPasswordController::class, 'sendEmailResset']);
     Route::post('resetPassword', [ChangePasswordController::class, 'process']);
     Route::post('profile/verificationMail', [MailVerificationController::class, 'verificationMail']);
-
 });
 Route::group([
 
