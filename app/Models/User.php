@@ -49,6 +49,7 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'provider_id',
     ];
 
     /**
@@ -148,7 +149,6 @@ class User extends Authenticatable implements JWTSubject
     public function format()
     {
         return $this->jsonSerialize();
-
     }
     public function getEtat()
     {

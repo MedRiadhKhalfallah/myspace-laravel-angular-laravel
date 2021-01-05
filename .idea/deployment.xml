@@ -8,34 +8,21 @@
             <mapping deploy="/deal/front" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
-            <excludedPath path="/deal/myapp/node_modules" />
-            <excludedPath path="/deal/myapp/vendor" />
-            <excludedPath path="/deal/myapp/storage" />
-            <excludedPath path="/deal/myapp/tests" />
-            <excludedPath path="/deal/myapp/resources/css" />
-            <excludedPath path="/deal/myapp/resources/js" />
-            <excludedPath path="/deal/myapp/resources/lang" />
-            <excludedPath path="/deal/myapp/bootstrap" />
-            <excludedPath path="/deal/myapp/.env" />
-            <excludedPath path="/deal/myapp/README.md" />
-            <excludedPath path="/deal/myapp/phpunit.xml" />
-            <excludedPath path="/deal/myapp/server.php" />
-            <excludedPath path="/deal/myapp/webpack.mix.js" />
-            <excludedPath path="/deal/myapp/artisan" />
-            <excludedPath path="/deal/myapp/.env.example" />
-            <excludedPath path="/deal/myapp/public" />
-            <excludedPath path="/deal/front/vendor" />
-            <excludedPath path="/deal/front/tests" />
-            <excludedPath path="/deal/front/node_modules" />
-            <excludedPath path="/deal/front/webpack.mix.js" />
-            <excludedPath path="/deal/front/server.php" />
-            <excludedPath path="/deal/front/README.md" />
-            <excludedPath path="/deal/front/phpunit.xml" />
             <excludedPath path="/deal/front/.env" />
             <excludedPath path="/deal/front/.env.example" />
-            <excludedPath path="/deal/front/.editorconfig" />
-            <excludedPath path="/deal/front/bootstrap" />
+            <excludedPath path="/deal/front/.gitattributes" />
+            <excludedPath path="/deal/front/.gitignore" />
+            <excludedPath path="/deal/front/.styleci.yml" />
+            <excludedPath path="/deal/front/artisan" />
+            <excludedPath path="/deal/front/phpunit.xml" />
+            <excludedPath path="/deal/front/README.md" />
+            <excludedPath path="/deal/front/server.php" />
+            <excludedPath path="/deal/front/webpack.mix.js" />
             <excludedPath path="/deal/front/storage" />
+            <excludedPath path="/deal/front/tests" />
+            <excludedPath path="/deal/front/vendor" />
+            <excludedPath path="/deal/front/node_modules" />
+            <excludedPath path="/deal/front/bootstrap" />
           </excludedPaths>
         </serverdata>
       </paths>

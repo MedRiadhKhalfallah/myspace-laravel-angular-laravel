@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
+        $this->middleware('auth:api', ['except' => ['login', 'signup', 'signupOrLoginSocialite']]);
     }
 
     /**
@@ -29,7 +29,28 @@ class AuthController extends Controller
      */
     public function login()
     {
+//        connection avec google
+        $data = request(['email', 'password', 'nom', 'prenom', 'provider_id', 'photoUrl']);
+        if ($data['password'] == "jvrdsogrjoi&kjsdflmsdf45sdfsdf3q7834sqf5sd4f3sdq4g8fd4g2fd24gh8f5dh44fgd58h"){
+        $user = User::where('email', '=', $data['email'])->where('provider_id', '=', $data['provider_id'])->first();
+        if (!$user) {
+            $user = new User();
+            $user->nom = $data['nom'];
+            $user->prenom = $data['prenom'];
+            $user->telephone = "12345678";
+            $user->email = $data['email'];
+            $user->provider_id = $data['provider_id'];
+            $user->avatar = $data['photoUrl'];
+            $user->password = "jvrdsogrjoi&kjsdflmsdf45sdfsdf3q7834sqf5sd4f3sdq4g8fd4g2fd24gh8f5dh44fgd58h";
+            $user->save();
+            $user->assignRole('utilisateur');
+            $user->assignRole('admin');
+        }
+    }
+//        connection avec google /
+
         $credentials = request(['email', 'password']);
+
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
@@ -48,7 +69,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth()->user()->format());
     }
 
     /**
