@@ -7,7 +7,6 @@ use App\Http\Requests\MarqueCreateRequest;
 use App\Image;
 use App\Models\Marque;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use JWTAuth;
 
 class MarqueController extends Controller

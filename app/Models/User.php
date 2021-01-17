@@ -80,6 +80,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * @param $value
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
@@ -89,7 +92,10 @@ class User extends Authenticatable implements JWTSubject
         {
             return $this->belongsToMany(Role::class);
         }*/
-
+    /**
+     * @param $roles
+     * @return bool
+     */
     public function hasAnyRoles($roles)
     {
         if ($this->roles()->whereIn('name', $roles)->first()) {
@@ -99,35 +105,59 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    /**
+     * @param $role
+     * @return bool
+     */
     public function hasRole($role)
     {
-        if ($this->roles()->where('name', $role)->first()) {
+        if ($this->roles()->where('name','=', $role)->first()) {
             return true;
         } else {
             return false;
         }
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function getNomAttribute($value)
     {
         return ucfirst($value);
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function getPrenomAttribute($value)
     {
         return ucfirst($value);
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function setNomAttribute($value)
     {
         return $this->attributes['nom'] = strtolower($value);
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function setPrenomAttribute($value)
     {
         return $this->attributes['prenom'] = strtolower($value);
     }
 
+    /**
+     * @param $user
+     * @throws \Exception
+     */
     public function isExiste($user)
     {
         if (User::where('email', '=', Input::get('email'))->exists()) {
@@ -135,25 +165,62 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function getImageProfilePathAttribute($value)
     {
         return url('/') .config('front.STORAGE_URL'). '/profiles_images/' . $value;
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function getImageCoverturePathAttribute($value)
     {
         return url('/') . config('front.STORAGE_URL').'/covertures_images/' . $value;
     }
 
+    /**
+     * @return array
+     */
     public function format()
     {
         return $this->jsonSerialize();
 
     }
+
+    /**
+     * @return mixed
+     */
     public function getEtat()
     {
         return $this->etat;
+    }
+    /**
+     * @return mixed
+     */
+    public function getSocieteId()
+    {
+        return $this->societe_id;
+    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function societe()
+    {
+        return $this->belongsTo(Societe::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function produits()
+    {
+        return $this->hasMany(Produit::class);
     }
 
 }

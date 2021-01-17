@@ -25,6 +25,8 @@ class UpdateUsersTable extends Migration
             $table->boolean('sex')->default(true);
             $table->text('description')->nullable()->default('votre description here');
             $table->date('date_de_naissance')->nullable()->default(date('Y-m-d'));;
+            $table->unsignedBigInteger('societe_id');
+            $table->foreign('societe_id')->references('id')->on('societes');
         });
 
     }
