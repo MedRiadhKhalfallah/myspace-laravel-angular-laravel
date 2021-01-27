@@ -20,6 +20,8 @@ use \App\Http\Controllers\societe\SocieteController;
 use \App\Http\Controllers\societe\SocieteSearchController;
 use \App\Http\Controllers\produit\ProduitController;
 use \App\Http\Controllers\produit\ProduitSearchController;
+use \App\Http\Controllers\historique\HistoriqueSearchController;
+use \App\Http\Controllers\etat\EtatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +45,14 @@ Route::group([
     Route::post('resetPassword', [ChangePasswordController::class, 'process']);
     Route::post('profile/verificationMail', [MailVerificationController::class, 'verificationMail']);
     Route::get('produits/reference/{reference}', [ProduitController::class, 'getProduitByReference']);
+    Route::post('societeTopSearch', [SocieteSearchController::class, 'societeTopSearch']);
+    Route::post('societeMapSearch', [SocieteSearchController::class, 'societeMapSearch']);
+    Route::get('societes/{societe}', [SocieteController::class, 'show']);
 
 });
 Route::group([
 
-    'middleware' => ['auth.jwt','active_user'],
+    'middleware' => ['auth.jwt', 'active_user'],
 ], function ($router) {
 
     Route::post('logout', [AuthController::class, 'logout']);
@@ -71,13 +76,17 @@ Route::group([
     Route::resource('users', UserController::class)->middleware('role:admin');
     Route::resource('userSearch', UserSearchController::class)->middleware('role:admin');
 //societe route
-    Route::get('societes/current', [SocieteController::class, 'getCurrentSociete']);
-    Route::resource('societes', SocieteController::class);
+    Route::get('societe/current', [SocieteController::class, 'getCurrentSociete']);
+    Route::resource('societes', SocieteController::class)->except('show');
     Route::resource('societeSearch', SocieteSearchController::class)->middleware('role:admin');
     Route::patch('societes/societe-image/{id}', [SocieteController::class, 'updateSocieteImage']);
     Route::patch('societes/societe-coverture-image/{id}', [SocieteController::class, 'updateCovertureImage']);
 // produit route
     Route::resource('produits', ProduitController::class);
     Route::resource('produitSearch', ProduitSearchController::class);
-
+    Route::get('produitsByEtat', [ProduitSearchController::class,'getProduitsByEtat']);
+// historique route
+    Route::resource('historiqueSearch', HistoriqueSearchController::class);
+// etat route
+    Route::resource('etats', EtatController::class);
 });

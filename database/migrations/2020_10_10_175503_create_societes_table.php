@@ -23,8 +23,8 @@ class CreateSocietesTable extends Migration
             $table->string('telephone_mobile');
             $table->string('telephone_fix')->nullable();
             $table->string('numero_tva')->nullable();
-            $table->float('longitude')->nullable();
-            $table->float('latitude')->nullable();
+            $table->double('longitude')->nullable();
+            $table->double('latitude')->nullable();
             $table->string('email')->unique();
             $table->string('image_societe_path')->nullable()->default('4.jpg');
             $table->string('image_societe_name')->nullable()->default('4.jpg');
@@ -33,7 +33,7 @@ class CreateSocietesTable extends Migration
             $table->string('etat')->nullable()->default(true);
             $table->string('site_web')->nullable()->default('https://www.facebook.com/');
             $table->string('site_fb')->nullable()->default('https://www.facebook.com/');
-            $table->text('description')->nullable()->default('votre description here');
+            $table->text('description')->nullable();
             $table->string('type_abonnement')->nullable();
             $table->date('date_fin_abonnement')->nullable()->default(date('Y-m-d'));
 

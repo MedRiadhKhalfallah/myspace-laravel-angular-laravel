@@ -111,7 +111,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function hasRole($role)
     {
-        if ($this->roles()->where('name','=', $role)->first()) {
+        if ($this->roles()->where('name', '=', $role)->first()) {
             return true;
         } else {
             return false;
@@ -171,7 +171,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getImageProfilePathAttribute($value)
     {
-        return url('/') .config('front.STORAGE_URL'). '/profiles_images/' . $value;
+        return url('/') . config('front.STORAGE_URL') . '/profiles_images/' . $value;
     }
 
     /**
@@ -180,7 +180,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getImageCoverturePathAttribute($value)
     {
-        return url('/') . config('front.STORAGE_URL').'/covertures_images/' . $value;
+        return url('/') . config('front.STORAGE_URL') . '/covertures_images/' . $value;
     }
 
     /**
@@ -199,12 +199,26 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->etat;
     }
+
     /**
      * @return mixed
      */
     public function getSocieteId()
     {
         return $this->societe_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSocieteNom()
+    {
+        $societe = Societe::where('id', '=', $this->societe_id)->first();
+        if ($societe){
+            return $societe->getNom();
+        }else{
+            return "";
+        }
     }
 
     /**

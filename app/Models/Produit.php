@@ -15,7 +15,7 @@ class Produit extends Model
         'nom_client',
         'telephone',
         'email',
-        'etat',
+        'etat_id',
         'reference',
         'description_agent',
         'description_client',
@@ -55,6 +55,13 @@ class Produit extends Model
     {
         return $this->belongsTo(Societe::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function etat()
+    {
+        return $this->belongsTo(Etat::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -75,13 +82,34 @@ class Produit extends Model
             'nom_client' => $this->nom_client,
             'telephone' => $this->telephone,
             'email' => $this->email,
+            'etat_id' => $this->etat_id,
             'etat' => $this->etat,
             'reference' => $this->reference,
             'description_agent' => $this->description_agent,
             'description_client' => $this->description_client,
             'client_id' => $this->client_id,
-            'societe_id' => $this->societe_id,
-            'createur_id' => $this->createur_id,
+            'societe' => $this->societe->format(),
+            'createur_id' =>$this->createur_id,
+            'created_at' => $this->created_at->format('Y-m-d')
+        ];
+    }
+    /**
+     * @return array
+     */
+    public function formatProduitByReference()
+    {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'nom_client' => $this->nom_client,
+            'telephone' => $this->telephone,
+            'email' => $this->email,
+            'etat' => $this->etat,
+            'reference' => $this->reference,
+            'description_client' => $this->description_client,
+            'client_id' => $this->client_id,
+            'societe' => $this->societe,
+            'created_at' => $this->created_at->format('Y-m-d')
         ];
     }
 

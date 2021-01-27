@@ -26,5 +26,27 @@ class SocieteSearchController extends Controller
         $societes = $this->societeRepository->searchWithCriteria($request->all());
         return $societes;
     }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Societe
+     */
+    public function societeTopSearch(Request $request)
+    {
+        $societes = $this->societeRepository->societeTopSearch($request->all());
+        return $societes;
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Societe
+     */
+    public function societeMapSearch(Request $request)
+    {
+        $societes = $this->societeRepository->societeMapSearch($request->all());
+        return $societes;
+    }
 
 }

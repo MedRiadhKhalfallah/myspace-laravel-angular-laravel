@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\historique\HistoriqueController;
 use App\Http\Requests\ProfileUpdateRequest;
 use Carbon\Carbon;
 use App\Models\Profile;
@@ -15,9 +16,13 @@ use JWTAuth;
 class ProfileController extends Controller
 {
     protected $user;
+    /** @var HistoriqueController */
+    protected $historiqueController;
+    const CONTROLLER_NAME = 'Profile';
 
     public function __construct()
     {
+        $this->historiqueController = new HistoriqueController();
         if (JWTAuth::getToken()) {
             $this->user = JWTAuth::parseToken()->authenticate();
         }
@@ -92,6 +97,7 @@ class ProfileController extends Controller
 
         }
         if ($res) {
+            $this->saveHistorique('update',$request->all());
             return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation utilisateur'], 400);
@@ -111,6 +117,8 @@ class ProfileController extends Controller
         $obj_user = User::find($user_id);
         $res = null;
         $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+
+        $this->saveHistorique('updatePassword',$request->all());
 
         if ($request->input('password') !== $request->input('password_confirmation')) {
             return response()->json(['message' => 'mot de passe non conforme'], 400);
@@ -141,6 +149,10 @@ class ProfileController extends Controller
     {
         /** @var User $userAuth */
         $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
+
+        $this->saveHistorique('updateRoles',$request->all());
+
+
         if ($userAuth && $userAuth->hasRole('admin')) {
             $obj_user = User::find($id);
             if ($obj_user->email == 'mrk19933@gmail.com') {
@@ -164,6 +176,9 @@ class ProfileController extends Controller
      */
     public function updateProfileImage(Request $request, $id)
     {
+
+        $this->saveHistorique('updateProfileImage',$request->all());
+
         $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
         if ($userAuth && $userAuth->hasRole('admin')) {
             $user_id = $id;
@@ -201,6 +216,10 @@ class ProfileController extends Controller
      */
     public function updateCovertureImage(Request $request, $id)
     {
+
+        $this->saveHistorique('updateCovertureImage',$request->all());
+
+
         $userAuth = User::where('id', auth()->user()->getAuthIdentifier())->first();
         if ($userAuth && $userAuth->hasRole('admin')) {
             $user_id = $id;
@@ -240,10 +259,23 @@ class ProfileController extends Controller
     {
         $res = $profile->delete();
         if ($res) {
+            $this->saveHistorique('destroy',$profile->id);
+
             return response()->json(['message' => 'Utilisateur supprimé avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec supprimé utilisateur'], 400);
         }
+    }
+
+    private function saveHistorique($action, $action_contenu)
+    {
+        $this->historiqueController->store(
+            [
+                'controller' => $this::CONTROLLER_NAME,
+                'action' => $action,
+                'action_contenu' => $action_contenu,
+            ]
+        );
     }
 
 }

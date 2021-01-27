@@ -18,5 +18,5 @@ return [
 //PROD
 /*return [
     'FRONT_URL' => env('FRONT_URL', 'http://www.angular.mtsplus.tn'),
-    'FRONT_URL' => env('image_URL', '/front/storage/app/public'),
+    'STORAGE_URL' => env('image_URL', '/front/storage/app/public'),
 ];*/

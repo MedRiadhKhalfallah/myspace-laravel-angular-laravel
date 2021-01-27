@@ -16,17 +16,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-        User::truncate();
-        DB::table('role_user')->truncate();
-
         /** @var User $admin */
         $admin = User::create([
             'nom' => 'mohamed Riadh',
             'prenom' => 'khalfallah',
             'telephone' => '26678826',
             'email' => 'mrk19933@gmail.com',
-            'password' => bcrypt('riadh123'),
+            'password' => 'riadh123'
         ]);
 
         /** @var User $admin */
@@ -35,7 +31,7 @@ class UsersTableSeeder extends Seeder
             'prenom' => 'meddeb',
             'telephone' => '26678826',
             'email' => 'meddebameni@gmail.com',
-            'password' => bcrypt('ameni123'),
+            'password' => 'ameni123'
         ]);
 
         /** @var User $admin */
@@ -44,15 +40,18 @@ class UsersTableSeeder extends Seeder
             'prenom' => 'client',
             'telephone' => '26678826',
             'email' => 'med.riadh.khalfallah@gmail.com',
-            'password' => bcrypt('client123'),
+            'password' => 'client123'
         ]);
 
         $adminRole = Role::where('name', 'admin')->first();
         $auteurRole = Role::where('name', 'auteur')->first();
         $utilisateurRole = Role::where('name', 'utilisateur')->first();
+        $admin_societe = Role::where('name', 'admin_societe')->first();
 
         $admin->roles()->attach($adminRole);
         $auteur->roles()->attach($auteurRole);
+        $auteur->roles()->attach($adminRole);
         $utilisateur->roles()->attach($utilisateurRole);
+        $utilisateur->roles()->attach($admin_societe);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\societe;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\historique\HistoriqueController;
 use App\Http\Requests\SocieteCreateRequest;
 use App\Models\Societe;
 use App\Models\User;
@@ -15,9 +16,14 @@ class SocieteController extends Controller
 {
 
     protected $user;
+    /** @var HistoriqueController */
+    protected $historiqueController;
+    const CONTROLLER_NAME = 'Produit';
 
     public function __construct()
     {
+        $this->historiqueController = new HistoriqueController();
+
         if (JWTAuth::getToken()) {
             $this->user = JWTAuth::parseToken()->authenticate();
         }
@@ -33,6 +39,7 @@ class SocieteController extends Controller
         $this->authorize('index', Societe::class);
         return Societe::all();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +47,7 @@ class SocieteController extends Controller
      */
     public function getCurrentSociete()
     {
-        return Auth::user()->societe()->get()->first();
+        return Auth::user()->societe()->first();
     }
 
     /**
@@ -59,6 +66,8 @@ class SocieteController extends Controller
         $res = Societe::create($this->params($request));
 
         if ($res) {
+            $this->saveHistorique('store', $this->params($request));
+
             return response()->json(['message' => 'Societe cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Societe'], 400);
@@ -74,7 +83,7 @@ class SocieteController extends Controller
      */
     public function show(Societe $societe)
     {
-        $this->authorize('show', $societe);
+//        $this->authorize('show', $societe);
         return $societe;
     }
 
@@ -91,6 +100,8 @@ class SocieteController extends Controller
         $res = $societe->update($this->params($request));
 
         if ($res) {
+            $this->saveHistorique('update', $this->params($request));
+
             return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation utilisateur'], 400);
@@ -110,6 +121,7 @@ class SocieteController extends Controller
 
         $res = $societe->delete();
         if ($res) {
+            $this->saveHistorique('destroy', $societe->id);
             return response()->json(['message' => 'Societe modifier avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec modification Societe'], 400);
@@ -144,6 +156,8 @@ class SocieteController extends Controller
             $res = $societe->save();
 
             if ($res) {
+                $this->saveHistorique('updateCovertureImage', $request->all());
+
                 return response()->json(['message' => 'Photo de coverture a ete modifier avec success'], 200);
             } else {
                 return response()->json(['error' => 'Echec modification image de coverture'], 400);
@@ -176,6 +190,8 @@ class SocieteController extends Controller
             $societe->image_societe_path = $fileNameUnique;
             $res = $societe->save();
             if ($res) {
+                $this->saveHistorique('updateSocieteImage', $request->all());
+
                 return response()->json(['message' => 'Photo de profile a ete modifier avec success'], 200);
             } else {
                 return response()->json(['error' => 'Echec modification image de profile'], 400);
@@ -187,12 +203,23 @@ class SocieteController extends Controller
     private function params(SocieteCreateRequest $request)
     {
         /** @var User $user */
-        $user= Auth::user();
-        if ($user->hasRole('admin')){
+        $user = Auth::user();
+        if ($user->hasRole('admin')) {
             return $request->all();
-        }else{
-            return $request->except(['type_abonnement','date_fin_abonnement']);
+        } else {
+            return $request->except(['type_abonnement', 'date_fin_abonnement']);
         }
+    }
+
+    private function saveHistorique($action, $action_contenu)
+    {
+        $this->historiqueController->store(
+            [
+                'controller' => $this::CONTROLLER_NAME,
+                'action' => $action,
+                'action_contenu' => $action_contenu,
+            ]
+        );
     }
 
 }

@@ -80,6 +80,11 @@ class Societe extends Model
         }
     }
 
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -122,6 +127,29 @@ class Societe extends Model
             'description' => $this->description,
             'type_abonnement' => $this->type_abonnement,
             'date_fin_abonnement' => $this->date_fin_abonnement,
+        ];
+    }
+    /**
+     * @return array
+     */
+    public function formatMap()
+    {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'adresse' => $this->adresse,
+            'complement_adresse' => $this->complement_adresse,
+            'code_postal' => $this->code_postal,
+            'ville' => $this->ville,
+            'email' => $this->email,
+            'telephone_mobile' => $this->telephone_mobile,
+            'telephone_fix' => $this->telephone_fix,
+            'longitude' => $this->longitude,
+            'latitude' => $this->latitude,
+            'image_societe_path' => $this->image_societe_path,
+            'image_societe_name' => $this->image_societe_name,
+            'site_web' => $this->site_web,
+            'site_fb' => $this->site_fb,
         ];
     }
 }

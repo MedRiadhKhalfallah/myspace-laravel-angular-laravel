@@ -23,9 +23,9 @@ class UpdateUsersTable extends Migration
             $table->string('site_web')->nullable()->default('https://www.facebook.com/');
             $table->string('site_fb')->nullable()->default('https://www.facebook.com/');
             $table->boolean('sex')->default(true);
-            $table->text('description')->nullable()->default('votre description here');
+            $table->text('description')->nullable();
             $table->date('date_de_naissance')->nullable()->default(date('Y-m-d'));;
-            $table->unsignedBigInteger('societe_id');
+            $table->unsignedBigInteger('societe_id')->nullable();
             $table->foreign('societe_id')->references('id')->on('societes');
         });
 

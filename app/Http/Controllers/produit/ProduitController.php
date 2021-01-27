@@ -3,21 +3,24 @@
 namespace App\Http\Controllers\produit;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\historique\HistoriqueController;
 use App\Http\Requests\ProduitCreateRequest;
-use App\Http\Requests\SocieteCreateRequest;
 use App\Models\Produit;
 use App\Models\Societe;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 
 class ProduitController extends Controller
 {
     protected $user;
+    /** @var HistoriqueController */
+    protected $historiqueController;
+    const CONTROLLER_NAME = 'Produit';
 
-    public function __construct()
+    public function __construct(HistoriqueController $historiqueController)
     {
+        $this->historiqueController = new HistoriqueController();
         if (JWTAuth::getToken()) {
             $this->user = JWTAuth::parseToken()->authenticate();
         }
@@ -50,7 +53,9 @@ class ProduitController extends Controller
         $res = Produit::create($param);
 
         if ($res) {
-            return response()->json(['message' => 'Produit cree avec succee'], 200);
+            $this->saveHistorique('store', $request->all());
+
+            return response()->json(['data' => $res->format(), 'message' => 'Produit cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Produit'], 400);
         }
@@ -78,7 +83,9 @@ class ProduitController extends Controller
      */
     public function getProduitByReference(string $reference)
     {
-        return Produit::with('societe')->where('reference', '=', $reference)->first();
+        return Produit::with('societe')->
+        where('reference', '=', $reference)->
+        first()->formatProduitByReference();
     }
 
     /**
@@ -94,6 +101,7 @@ class ProduitController extends Controller
         $res = $produit->update($this->params($request));
 
         if ($res) {
+            $this->saveHistorique('update', $this->params($request));
             return response()->json(['message' => 'Produit cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Produit'], 400);
@@ -109,10 +117,11 @@ class ProduitController extends Controller
      */
     public function destroy(Produit $produit)
     {
-        $this->authorize('destroy', Societe::class);
+        $this->authorize('destroy', Produit::class);
 
         $res = $produit->delete();
         if ($res) {
+            $this->saveHistorique('destroy', $produit->id);
             return response()->json(['message' => 'Societe modifier avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec modification Societe'], 400);
@@ -129,6 +138,17 @@ class ProduitController extends Controller
         } else {
             return $request->all();
         }
+    }
+
+    private function saveHistorique($action, $action_contenu)
+    {
+        $this->historiqueController->store(
+            [
+                'controller' => $this::CONTROLLER_NAME,
+                'action' => $action,
+                'action_contenu' => $action_contenu,
+            ]
+        );
     }
 
 }

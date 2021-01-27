@@ -98,7 +98,7 @@ class AuthController extends Controller
         /** @var User $user */
         $user = User::create($request->all());
 //        $user->givePermissionTo(['api'=>'show users']);
-        $user->assignRole('utilisateur');
+        $user->assignRole('admin_societe');
         return $this->login($request);
     }
 }
