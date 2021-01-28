@@ -66,12 +66,15 @@ class SocieteController extends Controller
         $res = Societe::create($this->params($request));
 
         if ($res) {
-            $this->saveHistorique('store', $this->params($request));
+            $user = User::where('id', '=', Auth::user()->id)->first();
+            $resUser = $user->update(['societe_id' => $res->id]);
+            if ($resUser) {
+                $this->saveHistorique('store', $this->params($request));
 
-            return response()->json(['message' => 'Societe cree avec succee'], 200);
-        } else {
-            return response()->json(['error' => 'Echec creation Societe'], 400);
+                return response()->json(['data' => $res->format(), 'message' => 'Societe cree avec succee'], 200);
+            }
         }
+        return response()->json(['error' => 'Echec creation Societe'], 400);
 
     }
 

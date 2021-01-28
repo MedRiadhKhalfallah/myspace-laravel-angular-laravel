@@ -82,12 +82,16 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $societe = "";
+        if (auth()->user()->getSocieteId()) {
+            $societe = true;
+        }
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
 //            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $this->me(),
-            'societe_id' => auth()->user()->getSocieteId(),
+            'societe' => $societe,
             'roles' => auth()->user()->getRoleNames()
 
         ]);

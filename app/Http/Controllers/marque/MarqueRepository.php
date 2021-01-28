@@ -19,7 +19,7 @@ class MarqueRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-        $qr = Marque::orderBy('name');
+        $qr = Marque::orderBy('id');
 //        return $criteria;
         foreach ($criteria as $key => $value) {
             if ($value != null) {

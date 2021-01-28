@@ -17,7 +17,7 @@ class EtatPolicy
         }
     }
 
-    public function index(User $user, Etat $etat)
+    public function index(User $user)
     {
         return ($user->hasRole('admin_societe') || $user->hasRole('admin'));
     }

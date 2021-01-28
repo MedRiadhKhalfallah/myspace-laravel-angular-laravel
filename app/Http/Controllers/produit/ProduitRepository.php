@@ -52,7 +52,7 @@ class ProduitRepository
             if ($value != null) {
                 switch ($key) {
                     case 'societe_id':
-                        $qr->where('societe_id', '=', $value);
+                        $qr->where('produits.societe_id', '=', $value);
                         break;
                 }
 

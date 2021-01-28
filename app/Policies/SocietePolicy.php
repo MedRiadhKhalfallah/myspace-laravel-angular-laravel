@@ -22,7 +22,7 @@ class SocietePolicy
         return $user->hasRole('admin');
     }
 
-    public function store(User $user, Societe $societe)
+    public function store(User $user)
     {
         return !$user->societe_id;
     }
