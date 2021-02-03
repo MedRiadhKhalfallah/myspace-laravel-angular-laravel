@@ -51,7 +51,7 @@ class Etat extends Model
             'nom' => $this->nom,
             'order' => $this->order,
             'societe' => $this->societe->format(),
-            'createur' =>$this->user(),
+            'createur_id' =>$this->createur_id,
             'created_at' => $this->created_at->format('Y-m-d')
         ];
     }

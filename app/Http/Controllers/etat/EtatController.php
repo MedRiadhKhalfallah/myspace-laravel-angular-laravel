@@ -38,7 +38,7 @@ class EtatController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(EtatCreateRequest $request)
@@ -63,7 +63,7 @@ class EtatController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Etat $etat)
@@ -76,8 +76,8 @@ class EtatController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(EtatCreateRequest $request, Etat $etat)
@@ -86,8 +86,8 @@ class EtatController extends Controller
         $res = $etat->update($request->all());
 
         if ($res) {
-            $this->saveHistorique('update',$request->all());
-            return response()->json(['message' => 'Etat cree avec succee'], 200);
+            $this->saveHistorique('update', $request->all());
+            return response()->json(['data' => $etat->format(), 'message' => 'Etat cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Etat'], 400);
         }
@@ -97,12 +97,12 @@ class EtatController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Etat $etat)
     {
-        $this->authorize('destroy', Etat::class);
+        $this->authorize('destroy', $etat);
 
         $res = $etat->delete();
         if ($res) {
@@ -116,11 +116,13 @@ class EtatController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
+        $contenu["Nom d'état"]=$action_contenu['nom'];
+        $contenu["Ordre d'état"]=$action_contenu['order'];
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,
                 'action' => $action,
-                'action_contenu' => $action_contenu,
+                'action_contenu' => $contenu,
             ]
         );
     }

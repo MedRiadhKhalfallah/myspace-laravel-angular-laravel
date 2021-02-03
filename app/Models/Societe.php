@@ -22,13 +22,19 @@ class Societe extends Model
         'longitude',
         'latitude',
         'email',
+        'notre_code_invitation',
+        'votre_code_invitation',
+        'reference_societe',
+        'type_activite_id',
         'image_societe_path',
         'image_societe_name',
         'image_coverture_path',
         'image_coverture_name',
         'site_web',
         'site_fb',
-        'description'
+        'description',
+        'type_abonnement',
+        'date_fin_abonnement'
     ];
 
     /**
@@ -99,6 +105,13 @@ class Societe extends Model
     {
         return $this->hasMany(Produit::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function typeActivite()
+    {
+        return $this->belongsTo(TypeActivite::class);
+    }
 
     /**
      * @return array
@@ -126,6 +139,11 @@ class Societe extends Model
             'site_fb' => $this->site_fb,
             'description' => $this->description,
             'type_abonnement' => $this->type_abonnement,
+            'notre_code_invitation' => $this->notre_code_invitation,
+            'votre_code_invitation' => $this->votre_code_invitation,
+            'reference_societe' => $this->reference_societe,
+            'type_activite' => $this->typeActivite,
+            'type_activite_id' => $this->type_activite_id,
             'date_fin_abonnement' => $this->date_fin_abonnement,
         ];
     }
@@ -150,6 +168,7 @@ class Societe extends Model
             'image_societe_name' => $this->image_societe_name,
             'site_web' => $this->site_web,
             'site_fb' => $this->site_fb,
+            'type_activite' => $this->typeActivite,
         ];
     }
 }

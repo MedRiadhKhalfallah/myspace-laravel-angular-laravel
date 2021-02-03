@@ -22,6 +22,7 @@ use \App\Http\Controllers\produit\ProduitController;
 use \App\Http\Controllers\produit\ProduitSearchController;
 use \App\Http\Controllers\historique\HistoriqueSearchController;
 use \App\Http\Controllers\etat\EtatController;
+use \App\Http\Controllers\typeActivite\TypeActiviteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,4 +90,6 @@ Route::group([
     Route::resource('historiqueSearch', HistoriqueSearchController::class);
 // etat route
     Route::resource('etats', EtatController::class);
+// type activité route
+    Route::resource('typeActivites', TypeActiviteController::class);
 });

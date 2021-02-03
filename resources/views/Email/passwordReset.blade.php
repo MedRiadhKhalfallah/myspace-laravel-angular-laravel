@@ -1,11 +1,10 @@
 @component('mail::message')
-    # Change password Request
-    Click on the button below to change password Request.
+    Vous avez demandé à réinitialiser vos identifiants de connexion sur Maintenance TN.<br>
+    Cette opération vous attribuera un nouveau mot de passe.<br>
+    Pour confirmer cette action, cliquez sur le bouton suivant :
 
-    @component('mail::button', ['url' => $url])
-        Reset password
+    @component('mail::button', ['url' => $url,'color'=>'primary'])
+        Réinitialiser le mot de passe
     @endcomponent
 
-    Thanks,<br>
-    My space Application
 @endcomponent

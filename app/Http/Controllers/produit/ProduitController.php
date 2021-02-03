@@ -9,6 +9,7 @@ use App\Models\Produit;
 use App\Models\Societe;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use JWTAuth;
 
 class ProduitController extends Controller
@@ -83,9 +84,12 @@ class ProduitController extends Controller
      */
     public function getProduitByReference(string $reference)
     {
-        return Produit::with('societe')->
-        where('reference', '=', $reference)->
-        first()->formatProduitByReference();
+        $produits = Produit::with('societe')->
+        where('reference', '=', $reference);
+        if (count($produits->get()) != 0) {
+            return $produits->first()->formatProduitByReference();
+        }
+        return null;
     }
 
     /**
@@ -102,7 +106,7 @@ class ProduitController extends Controller
 
         if ($res) {
             $this->saveHistorique('update', $this->params($request));
-            return response()->json(['message' => 'Produit cree avec succee'], 200);
+            return response()->json(['data' => $produit->format(),'message' => 'Produit cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Produit'], 400);
         }
@@ -117,7 +121,7 @@ class ProduitController extends Controller
      */
     public function destroy(Produit $produit)
     {
-        $this->authorize('destroy', Produit::class);
+        $this->authorize('destroy', $produit);
 
         $res = $produit->delete();
         if ($res) {
@@ -142,6 +146,40 @@ class ProduitController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
+        if (isset($action_contenu['nom'])) {
+            $contenu["Nom du produit"] = $action_contenu['nom'];
+        }
+        if (isset($action_contenu['nom_client'])) {
+            $contenu["Nom du client"] = $action_contenu['nom_client'];
+        }
+        if (isset($action_contenu['telephone'])) {
+            $contenu["Téléphone du client"] = $action_contenu['telephone'];
+        }
+        if (isset($action_contenu['email'])) {
+            $contenu["E-mail du client"] = $action_contenu['email'];
+        }
+        if (isset($action_contenu['etat_id'])) {
+            $contenu["Etat produit"] = $action_contenu['etat_id'];
+        }
+        if (isset($action_contenu['reference'])) {
+            $contenu["Référence produit"] = $action_contenu['reference'];
+        }
+        if (isset($action_contenu['description_agent'])) {
+            $contenu["Commentaire pour l'agent"] = $action_contenu['description_agent'];
+        }
+        if (isset($action_contenu['description_client'])) {
+            $contenu["Message pour le client"] = $action_contenu['description_client'];
+        }
+        if (isset($action_contenu['client_id'])) {
+            $contenu["Client"] = $action_contenu['client_id'];
+        }
+        if (isset($action_contenu['societe_id'])) {
+            $contenu["Nom de la société"] = $action_contenu['societe_id'];
+        }
+        if (isset($action_contenu['createur_id'])) {
+            $contenu["Créateur"] = $action_contenu['createur_id'];
+        }
+
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,

@@ -38,17 +38,28 @@ class HistoriqueController extends Controller
      */
     public function store($data)
     {
+        $action_contenu = "<lu>";
         if (is_array($data['action_contenu'])) {
-            $action_contenu = '';
             foreach ($data['action_contenu'] as $key => $value) {
                 if(is_array($value)){
-                    $value="array";
+                    $action_contenu .= "<lu>";
+                    foreach ($value as $k => $v) {
+                        if(is_array($v)){
+                            $action_contenu .= "<li>"."array"."</li>";
+                        }else{
+                            $action_contenu .= "<li>"."$k: $v"."</li>";
+                        }
+                    }
+                    $action_contenu .= "</lu>";
+                }else{
+                    $action_contenu .= "<li>"."$key: $value"."</li>";
                 }
-                $action_contenu .= "$key: $value,";
             }
         } else {
-            $action_contenu = $data['action_contenu'];
+            $action_contenu = "<li>".$data['action_contenu']."</li>";
         }
+        $action_contenu .= "</lu>";
+
         $res = Historique::create([
             'controller' => $data['controller'],
             'action' => $data['action'],
