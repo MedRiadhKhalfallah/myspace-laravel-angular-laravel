@@ -2,15 +2,17 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\typeActivite\TypeActiviteController;
 use App\Models\Etat;
 use App\Models\Historique;
 use App\Models\Produit;
+use App\Models\Reclamation;
 use App\Models\Societe;
+use App\Models\TypeActivite;
 use App\Models\User;
 use App\Policies\EtatPolicy;
 use App\Policies\HistoriquePolicy;
 use App\Policies\ProduitPolicy;
+use App\Policies\ReclamationPolicy;
 use App\Policies\SocietePolicy;
 use App\Policies\TypeActivitePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -29,7 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         Produit::class => ProduitPolicy::class,
         Etat::class => EtatPolicy::class,
         Historique::class => HistoriquePolicy::class,
-        TypeActiviteController::class => TypeActivitePolicy::class,
+        TypeActivite::class => TypeActivitePolicy::class,
+        Reclamation::class => ReclamationPolicy::class,
     ];
 
     /**

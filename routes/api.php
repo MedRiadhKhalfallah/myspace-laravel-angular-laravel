@@ -23,6 +23,7 @@ use \App\Http\Controllers\produit\ProduitSearchController;
 use \App\Http\Controllers\historique\HistoriqueSearchController;
 use \App\Http\Controllers\etat\EtatController;
 use \App\Http\Controllers\typeActivite\TypeActiviteController;
+use \App\Http\Controllers\reclamation\ReclamationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,4 +93,6 @@ Route::group([
     Route::resource('etats', EtatController::class);
 // type activité route
     Route::resource('typeActivites', TypeActiviteController::class);
+// reclamation route
+    Route::resource('reclamations', ReclamationController::class);
 });

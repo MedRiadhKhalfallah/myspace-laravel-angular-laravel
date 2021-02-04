@@ -90,6 +90,10 @@ class Societe extends Model
     {
         return $this->nom;
     }
+    public function getDateFinAbonnement()
+    {
+        return $this->date_fin_abonnement;
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

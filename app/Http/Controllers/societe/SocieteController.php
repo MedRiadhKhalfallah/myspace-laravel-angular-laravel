@@ -62,8 +62,9 @@ class SocieteController extends Controller
         if (Societe::isExiste($request) !== false) {
             return Societe::isExiste($request);
         }
-
-        $res = Societe::create($this->params($request));
+        $param = $this->params($request);
+        $param['date_fin_abonnement'] = date("Y-m-d");
+        $res = Societe::create($param);
 
         if ($res) {
             $user = User::where('id', '=', Auth::user()->id)->first();
@@ -218,6 +219,7 @@ class SocieteController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
+        $contenu = [];
         if (isset($action_contenu['nom'])) {
             $contenu["Nom de société"] = $action_contenu['nom'];
         }

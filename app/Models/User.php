@@ -221,6 +221,18 @@ class User extends Authenticatable implements JWTSubject
             return "";
         }
     }
+    /**
+     * @return mixed
+     */
+    public function getDateFinAbonnementSociete()
+    {
+        $societe = Societe::where('id', '=', $this->societe_id)->first();
+        if ($societe){
+            return $societe->getDateFinAbonnement();
+        }else{
+            return "";
+        }
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

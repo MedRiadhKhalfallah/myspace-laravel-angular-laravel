@@ -20,7 +20,7 @@ class ProduitRepository
         }
 
 //        $qr = Produit::orderBy('nom');
-        $qr = Produit::with('societe')->orderBy('id');
+        $qr = Produit::with('societe')->orderBy('id','DESC');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
@@ -40,7 +40,8 @@ class ProduitRepository
 
             }
         }
-        return $qr->offset($this->offset)->limit($this->limit)->get()
+        return $qr->offset($this->offset)->limit($this->limit)
+            ->get()
             ->map->format();
     }
 

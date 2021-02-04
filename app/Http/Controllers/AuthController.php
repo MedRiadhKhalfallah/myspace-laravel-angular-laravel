@@ -92,6 +92,7 @@ class AuthController extends Controller
 //            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $this->me(),
             'societe' => $societe,
+            'date_fin_abonnement_societe' => auth()->user()->getDateFinAbonnementSociete(),
             'roles' => auth()->user()->getRoleNames()
 
         ]);

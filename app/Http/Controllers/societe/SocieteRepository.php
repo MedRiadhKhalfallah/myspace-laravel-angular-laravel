@@ -58,14 +58,17 @@ class SocieteRepository
     public function societeMapSearch($criteria){
 
         $qr = Societe::orderBy('nom');
+        $criteria['date_fin_abonnement']=date('y-m-d');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
                     case 'nom':
                         $qr->where('nom', 'like', '%' . $value . '%');
                         break;
+                    case 'date_fin_abonnement':
+                        $qr->where('date_fin_abonnement', '>', $value );
+                        break;
                 }
-
             }
         }
         return $qr->get()

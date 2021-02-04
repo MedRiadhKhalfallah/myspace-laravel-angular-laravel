@@ -21,11 +21,13 @@ class SignUpRequest extends FormRequest
      *
      * @return array
      */
+//'nom'=>'required|min:4|max:255|regex:/(^([a-zA-Z]+)$)/u',
+
     public function rules()
     {
         return [
-            'nom'=>'required|min:4|max:255|regex:/(^([a-zA-Z]+)$)/u',
-            'prenom'=>'required|min:4|max:255|regex:/(^([a-zA-Z]+)$)/u',
+            'nom'=>'required|min:4|max:255',
+            'prenom'=>'required|min:4|max:255',
             'telephone'=>'required|min:8|max:8',
             'email'=>'required|email|unique:users',
             'password'=>'required|confirmed|min:8|max:255',
@@ -38,11 +40,9 @@ class SignUpRequest extends FormRequest
             'nom.required' => 'le :attribute est opligatoire.',
             'nom.max' => 'le :attribute doit etre inferieur a 255 carectaire.',
             'nom.min' => 'le :attribute doit etre superieur a 4 carectaire.',
-            'nom.regex' => 'le :attribute doit contenir que des carectaires.',
             'prenom.required' => 'le :attribute est opligatoire.',
             'prenom.max' => 'le :attribute doit etre inferieur a 255 carectaire.',
             'prenom.min' => 'le :attribute doit etre superieur a 4 carectaire.',
-            'prenom.regex' => 'le :attribute doit contenir que des carectaires.',
             'telephone.required' => 'le :attribute est opligatoire.',
             'telephone.max' => 'le :attribute doit etre inferieur a 9 carectaire.',
             'telephone.min' => 'le :attribute doit etre superieur a 7 carectaire.',
