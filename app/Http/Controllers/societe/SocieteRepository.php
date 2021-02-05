@@ -12,6 +12,8 @@ class SocieteRepository
 
     public function searchWithCriteria($criteria)
     {
+        $criteria['date_fin_abonnement']=date('y-m-d');
+
         if (isset($criteria['offset'])) {
             $this->offset = $criteria['offset'];
         }
@@ -23,6 +25,9 @@ class SocieteRepository
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
+                    case 'date_fin_abonnement':
+                        $qr->where('date_fin_abonnement', '>', $value );
+                        break;
                     case 'nom':
                         $qr->where('nom', 'like', '%' . $value . '%');
                         break;
@@ -36,10 +41,16 @@ class SocieteRepository
 
     public function societeTopSearch($criteria){
 
+        $criteria['date_fin_abonnement']=date('y-m-d');
         $qr = Societe::leftJoin('produits', 'produits.societe_id', '=', 'societes.id');
+
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
+                    case 'date_fin_abonnement':
+                        $qr->where('societes.date_fin_abonnement', '>', $value );
+                        break;
+
                     case 'date_top':
                         $qr->where('produits.created_at', '>=', $value);
                         break;
