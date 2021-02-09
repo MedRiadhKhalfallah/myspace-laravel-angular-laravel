@@ -24,6 +24,11 @@ use \App\Http\Controllers\historique\HistoriqueSearchController;
 use \App\Http\Controllers\etat\EtatController;
 use \App\Http\Controllers\typeActivite\TypeActiviteController;
 use \App\Http\Controllers\reclamation\ReclamationController;
+use \App\Http\Controllers\gouvernorat\GouvernoratConroller;
+use \App\Http\Controllers\gouvernorat\GouvernoratSearchController;
+use \App\Http\Controllers\delegation\DelegationConroller;
+use \App\Http\Controllers\delegation\DelegationSearchController;
+use \App\Http\Controllers\localite\LocaliteConroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +91,7 @@ Route::group([
 // produit route
     Route::resource('produits', ProduitController::class);
     Route::resource('produitSearch', ProduitSearchController::class);
-    Route::get('produitsByEtat', [ProduitSearchController::class,'getProduitsByEtat']);
+    Route::get('produitsByEtat', [ProduitSearchController::class, 'getProduitsByEtat']);
 // historique route
     Route::resource('historiqueSearch', HistoriqueSearchController::class);
 // etat route
@@ -95,4 +100,13 @@ Route::group([
     Route::resource('typeActivites', TypeActiviteController::class);
 // reclamation route
     Route::resource('reclamations', ReclamationController::class);
+// gouvernorat route
+    Route::resource('gouvernorats', GouvernoratConroller::class);
+    Route::resource('gouvernoratSearch', GouvernoratSearchController::class);
+
+// delegation route
+    Route::resource('delegations', DelegationConroller::class);
+    Route::resource('delegationSearch', DelegationSearchController::class);
+// Localites route
+    Route::resource('localites', LocaliteConroller::class);
 });

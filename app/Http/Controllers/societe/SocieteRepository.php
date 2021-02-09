@@ -3,6 +3,7 @@ namespace App\Http\Controllers\societe;
 
 use App\Models\Produit;
 use App\Models\Societe;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SocieteRepository
@@ -12,7 +13,9 @@ class SocieteRepository
 
     public function searchWithCriteria($criteria)
     {
-        $criteria['date_fin_abonnement']=date('y-m-d');
+        if (!Auth::user()->hasRole('admin')){
+            $criteria['date_fin_abonnement']=date('y-m-d');
+        }
 
         if (isset($criteria['offset'])) {
             $this->offset = $criteria['offset'];

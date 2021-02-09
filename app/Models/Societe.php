@@ -9,13 +9,15 @@ class Societe extends Model
 {
     use HasFactory;
 
-/** @var array  */
+    /** @var array */
     protected $fillable = [
         'nom',
         'adresse',
         'complement_adresse',
         'code_postal',
-        'ville',
+        'delegation_id',
+        'gouvernorat_id',
+        'localite_id',
         'telephone_mobile',
         'telephone_fix',
         'numero_tva',
@@ -61,7 +63,7 @@ class Societe extends Model
      */
     public function getImageSocietePathAttribute($value)
     {
-        return url('/') .config('front.STORAGE_URL'). '/societes_images/' . $value;
+        return url('/') . config('front.STORAGE_URL') . '/societes_images/' . $value;
     }
 
     /**
@@ -70,7 +72,7 @@ class Societe extends Model
      */
     public function getImageCoverturePathAttribute($value)
     {
-        return url('/') . config('front.STORAGE_URL').'/societes_covertures_images/' . $value;
+        return url('/') . config('front.STORAGE_URL') . '/societes_covertures_images/' . $value;
     }
 
     /**
@@ -81,7 +83,7 @@ class Societe extends Model
     {
         if (Societe::where('email', '=', strtolower($request->email))->exists()) {
             return response()->json(['message' => 'Societe avec ce mail existe'], 403);
-        }else{
+        } else {
             return false;
         }
     }
@@ -90,6 +92,7 @@ class Societe extends Model
     {
         return $this->nom;
     }
+
     public function getDateFinAbonnement()
     {
         return $this->date_fin_abonnement;
@@ -102,6 +105,7 @@ class Societe extends Model
     {
         return $this->hasMany(User::class);
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -109,12 +113,37 @@ class Societe extends Model
     {
         return $this->hasMany(Produit::class);
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function typeActivite()
     {
         return $this->belongsTo(TypeActivite::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function delegation()
+    {
+        return $this->belongsTo(Delegation::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gouvernorat()
+    {
+        return $this->belongsTo(Gouvernorat::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function localite()
+    {
+        return $this->belongsTo(Localite::class);
     }
 
     /**
@@ -128,7 +157,12 @@ class Societe extends Model
             'adresse' => $this->adresse,
             'complement_adresse' => $this->complement_adresse,
             'code_postal' => $this->code_postal,
-            'ville' => $this->ville,
+            'delegation' => $this->delegation,
+            'gouvernorat' => $this->gouvernorat,
+            'localite' => $this->localite,
+            'delegation_id' => $this->delegation_id,
+            'gouvernorat_id' => $this->gouvernorat_id,
+            'localite_id' => $this->localite_id,
             'email' => $this->email,
             'telephone_mobile' => $this->telephone_mobile,
             'telephone_fix' => $this->telephone_fix,
@@ -151,6 +185,7 @@ class Societe extends Model
             'date_fin_abonnement' => $this->date_fin_abonnement,
         ];
     }
+
     /**
      * @return array
      */
@@ -162,7 +197,12 @@ class Societe extends Model
             'adresse' => $this->adresse,
             'complement_adresse' => $this->complement_adresse,
             'code_postal' => $this->code_postal,
-            'ville' => $this->ville,
+            'delegation' => $this->delegation,
+            'gouvernorat' => $this->gouvernorat,
+            'localite' => $this->localite,
+            'delegation_id' => $this->delegation_id,
+            'gouvernorat_id' => $this->gouvernorat_id,
+            'localite_id' => $this->localite_id,
             'email' => $this->email,
             'telephone_mobile' => $this->telephone_mobile,
             'telephone_fix' => $this->telephone_fix,

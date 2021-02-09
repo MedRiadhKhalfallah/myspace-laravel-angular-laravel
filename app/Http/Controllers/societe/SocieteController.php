@@ -283,6 +283,15 @@ class SocieteController extends Controller
         if (isset($action_contenu['type_activite_id'])) {
             $contenu["Type Activité"] = $action_contenu['type_activite_id'];
         }
+        if (isset($action_contenu['delegation_id'])) {
+            $contenu["Delegation_id"] = $action_contenu['delegation_id'];
+        }
+        if (isset($action_contenu['gouvernorat_id'])) {
+            $contenu["Gouvernorat"] = $action_contenu['gouvernorat_id'];
+        }
+        if (isset($action_contenu['localite_id'])) {
+            $contenu["Localité"] = $action_contenu['localite_id'];
+        }
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,
