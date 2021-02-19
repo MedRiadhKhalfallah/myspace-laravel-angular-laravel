@@ -15,7 +15,8 @@ class CreateModelesTable extends Migration
     {
         Schema::create('modeles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nom');
+            $table->text('description')->nullable();
             $table->string('etat')->nullable();
             $table->unsignedBigInteger('marque_id');
             $table->foreign('marque_id')->references('id')->on('marques');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateMarquesTable extends Migration
+class CreateMarquesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class UpdateMarquesTable extends Migration
      */
     public function up()
     {
-        Schema::table('marques', function (Blueprint $table) {
+        Schema::create('marques', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom');
             $table->string('image_path')->nullable();
             $table->string('image_name')->nullable();
             $table->string('etat')->nullable();
-
+            $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -27,6 +30,6 @@ class UpdateMarquesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('marques');
     }
 }

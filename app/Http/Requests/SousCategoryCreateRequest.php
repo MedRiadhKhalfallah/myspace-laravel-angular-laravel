@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ModeleCreateRequest extends FormRequest
+class SousCategoryCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,10 @@ class ModeleCreateRequest extends FormRequest
     {
         return [
             'nom' => 'required|max:255',
-            'marque_id' => 'required',
-        ];
+            'order' => 'required|max:255',
+            'category_id' => 'required',
 
+        ];
     }
 
     /**
@@ -39,9 +40,10 @@ class ModeleCreateRequest extends FormRequest
     {
         return [
             'nom.required' => 'le :attribute est opligatoire.',
-            'marque_id.required' => 'la marque est opligatoire.',
             'nom.max' => 'le titre doit etre inferieur a 255 carectaire.',
+            'order.required' => 'le :attribute est opligatoire.',
+            'category_id.required' => 'le :attribute est opligatoire.',
+            'order.max' => 'le titre doit etre inferieur a 255 carectaire.',
         ];
     }
-
 }

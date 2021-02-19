@@ -14,26 +14,26 @@ class Marque extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'nom',
         'selectedFile',
         'etat',
         'image_path',
         'image_name'
     ];
 
-    public function getNameAttribute($value)
+    public function getNomAttribute($value)
     {
         return ucfirst($value);
     }
 
-    public function setNameAttribute($value)
+    public function setNomAttribute($value)
     {
-        return $this->attributes['name'] = strtolower($value);
+        return $this->attributes['nom'] = strtolower($value);
     }
 
     public static function isExiste($request)
     {
-        if (Marque::where('name', '=', strtolower($request->name))->exists()) {
+        if (Marque::where('nom', '=', strtolower($request->nom))->exists()) {
            return response()->json(['message' => 'Marque existe'], 403);
         }else{
             return false;
@@ -48,8 +48,8 @@ class Marque extends Model
     public function format()
     {
         return [
-            'marque_id' => $this->id,
-            'marque_name' => $this->name,
+            'id' => $this->id,
+            'nom' => $this->nom,
             'etat' => $this->etat,
             'image_path' => url('/').config('front.STORAGE_URL').'/marques_images/'.$this->image_path,
             'image_name' => $this->image_name

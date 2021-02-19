@@ -105,6 +105,21 @@ class Societe extends Model
     {
         return $this->hasMany(User::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function newProduits()
+    {
+        return $this->hasMany(NewProduit::class);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function limitNewProduits()
+    {
+        return $this->hasMany(NewProduit::class)->limit(9)->orderBy('id','DESC');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -112,6 +127,13 @@ class Societe extends Model
     public function produits()
     {
         return $this->hasMany(Produit::class);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class)->orderBy('order');
     }
 
     /**
@@ -183,6 +205,8 @@ class Societe extends Model
             'type_activite' => $this->typeActivite,
             'type_activite_id' => $this->type_activite_id,
             'date_fin_abonnement' => $this->date_fin_abonnement,
+            'newProduits' => $this->limitNewProduits->map->formatFromSociete(),
+            'categories' => $this->categories->map->formatFromSociete(),
         ];
     }
 

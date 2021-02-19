@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
-use \App\Marque;
 
 class Modele extends Model
 {
@@ -14,7 +12,8 @@ class Modele extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'nom',
+        'description',
         'marque_id'
     ];
 
@@ -22,20 +21,27 @@ class Modele extends Model
     {
         return $this->belongsTo(Marque::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function newProduits()
+    {
+        return $this->hasMany(NewProduit::class);
+    }
 
-    public function getNameAttribute($value)
+    public function getNomAttribute($value)
     {
         return ucfirst($value);
     }
 
-    public function setNameAttribute($value)
+    public function setNomAttribute($value)
     {
-        return $this->attributes['name'] = strtolower($value);
+        return $this->attributes['nom'] = strtolower($value);
     }
 
     public static function isExiste($request)
     {
-        if (Modele::where('name', '=', strtolower($request->name))->exists()) {
+        if (Modele::where('nom', '=', strtolower($request->nom))->exists()) {
            return response()->json(['message' => 'Modele existe'], 403);
         }else{
             return false;
@@ -45,9 +51,12 @@ class Modele extends Model
     public function format()
     {
         return [
+            'marque' => $this->marque,
             'marque_id' => $this->marque->id,
-            'modele_id' => $this->id,
-            'modele_name' => $this->name,
+            'newProduits' => $this->newProduits,
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'description' => $this->description,
             'etat' => $this->etat
         ];
 

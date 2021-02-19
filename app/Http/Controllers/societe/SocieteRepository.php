@@ -79,6 +79,27 @@ class SocieteRepository
                     case 'nom':
                         $qr->where('nom', 'like', '%' . $value . '%');
                         break;
+                    case 'email':
+                        $qr->where('email', 'like', '%' . $value . '%');
+                        break;
+                    case 'reference':
+                        $qr->where('reference', 'like', '%' . $value . '%');
+                        break;
+                    case 'delegation_id':
+                        $qr->where('delegation_id', '=', $value);
+                        break;
+                    case 'gouvernorat_id':
+                        $qr->where('gouvernorat_id', '=', $value);
+                        break;
+                    case 'telephone_fix':
+                        $qr->where('telephone_fix', '=', $value);
+                        break;
+                    case 'telephone_mobile':
+                        $qr->where('telephone_mobile', '=', $value);
+                        break;
+                    case 'type_activite_id':
+                        $qr->where('type_activite_id', '=', $value);
+                        break;
                     case 'date_fin_abonnement':
                         $qr->where('date_fin_abonnement', '>', $value );
                         break;

@@ -24,7 +24,7 @@ class MarqueCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
+            'nom' => 'required|max:255',
             'selectedFile' => 'required',
         ];
 
@@ -38,9 +38,9 @@ class MarqueCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'le :attribute est opligatoire.',
+            'nom.required' => 'le :attribute est opligatoire.',
             'selectedFile.required' => 'le :attribute est opligatoire.',
-            'name.max' => 'le titre doit etre inferieur a 255 carectaire.',
+            'nom.max' => 'le titre doit etre inferieur a 255 carectaire.',
         ];
     }
 

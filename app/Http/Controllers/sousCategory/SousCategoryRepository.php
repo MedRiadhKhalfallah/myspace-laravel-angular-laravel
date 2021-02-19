@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Http\Controllers\modele;
+namespace App\Http\Controllers\sousCategory;
 
 
-use App\Models\Modele;
+use App\Models\SousCategory;
 
-class ModeleRepository
+class SousCategoryRepository
 {
     private $offset = 0;
     private $limit = 50;
@@ -19,13 +19,12 @@ class ModeleRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
-        $qr = Modele::orderBy('nom');
+        $qr = SousCategory::orderBy('id');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
                     case 'nom':
-                        $qr->where('nom', 'like', '%' . $value . '%');
+                        $qr->where('name', 'like', '%' . $value . '%');
                         break;
                 }
 
@@ -33,5 +32,6 @@ class ModeleRepository
         }
         return $qr->offset($this->offset)->limit($this->limit)->get()
             ->map->format();
+
     }
 }

@@ -88,7 +88,8 @@ class SocieteController extends Controller
     public function show(Societe $societe)
     {
 //        $this->authorize('show', $societe);
-        return $societe;
+        return Societe::with(['newProduits','categories'])
+            ->where('id', '=', $societe->id)->first()->format();
     }
 
     /**

@@ -51,7 +51,7 @@ class MarqueController extends Controller
             $request->file('selectedFile')->storeAs('marques_images', $fileNameUnique, 'public');
 
             $res = Marque::create([
-                'name' => $request->input('name'),
+                'nom' => $request->input('nom'),
                 'image_name' => $fileName,
                 'image_path' => $fileNameUnique,
                 'etat' =>$request->input('etat'),
@@ -107,7 +107,7 @@ class MarqueController extends Controller
             $updateData['image_name']=$fileName;
             $updateData['image_path']=$fileNameUnique;
         }
-        $updateData['name']=$request->input('name');
+        $updateData['nom']=$request->input('nom');
         $updateData['etat']=$request->input('etat');
         $updateData['updated_at']=$request->input('updated_at');
 

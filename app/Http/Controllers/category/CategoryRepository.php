@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Http\Controllers\modele;
+namespace App\Http\Controllers\category;
 
 
-use App\Models\Modele;
+use App\Models\Category;
 
-class ModeleRepository
+class CategoryRepository
 {
     private $offset = 0;
     private $limit = 50;
@@ -19,8 +19,7 @@ class ModeleRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
-        $qr = Modele::orderBy('nom');
+        $qr = Category::orderBy('id');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
                 switch ($key) {
