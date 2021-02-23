@@ -10,6 +10,8 @@ use App\Models\Modele;
 use App\Models\NewProduit;
 use App\Models\Produit;
 use App\Models\Reclamation;
+use App\Models\Roue;
+use App\Models\RoueElement;
 use App\Models\Societe;
 use App\Models\SousCategory;
 use App\Models\TypeActivite;
@@ -22,6 +24,8 @@ use App\Policies\ModelePolicy;
 use App\Policies\NewProduitPolicy;
 use App\Policies\ProduitPolicy;
 use App\Policies\ReclamationPolicy;
+use App\Policies\RoueElementPolicy;
+use App\Policies\RouePolicy;
 use App\Policies\SocietePolicy;
 use App\Policies\SousCategoryPolicy;
 use App\Policies\TypeActivitePolicy;
@@ -47,7 +51,9 @@ class AuthServiceProvider extends ServiceProvider
         SousCategory::class => SousCategoryPolicy::class,
         Marque::class => MarquePolicy::class,
         Modele::class => ModelePolicy::class,
-        NewProduit::class => NewProduitPolicy::class
+        NewProduit::class => NewProduitPolicy::class,
+        Roue::class => RouePolicy::class,
+        RoueElement::class => RoueElementPolicy::class
     ];
 
     /**

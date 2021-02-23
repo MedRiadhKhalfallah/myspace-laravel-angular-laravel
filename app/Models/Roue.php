@@ -11,7 +11,9 @@ class Roue extends Model
 
     /** @var array */
     protected $fillable = [
-        'gameOverText'
+        'gameOverText',
+        'societe_id',
+        'etat',
     ];
 
     /**
@@ -36,10 +38,16 @@ class Roue extends Model
     public function format()
     {
         $colorArray = [];
-        $segmentValuesArray = $this->roueElements();
-        foreach ($segmentValuesArray as $key => $value) {
-            array_push($colorArray, $segmentValuesArray[$key]);
-        }
+        $segmentValuesArray=$this->roueElements;
+        /** @var RoueElement $segmentValues */
+        foreach ($segmentValuesArray as $segmentValues) {
+            foreach ($segmentValues->format() as $key => $value) {
+                if ($key == "color") {
+                    array_push($colorArray, $segmentValues[$key]);
+                }
+
+            }
+                }
 
         return [
             'id' => $this->id,
@@ -68,8 +76,11 @@ class Roue extends Model
             'introText' => $this->introText,
             'hasSound' => $this->hasSound,
             'clickToSpin' => $this->clickToSpin,
-            'segmentValuesArray' => $this->roueElements(),
+            'segmentValuesArray' => $this->roueElements,
             'colorArray' => $colorArray,
+            'gameId' => '9a0232ec06bc431114e2a7f3aea03bbe2164f1aa',
+            'spinDestinationArray' => [],
+            'segmentStrokeColor' => '#E2E2E2',
         ];
     }
 

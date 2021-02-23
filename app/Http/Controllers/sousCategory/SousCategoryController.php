@@ -32,14 +32,14 @@ class SousCategoryController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', SousCategory::class);
-        return SousCategory::where('societe_id', '=', Auth::user()->societe_id)->orderBy('order')->get();
+/*        $this->authorize('index', SousCategory::class);
+        return SousCategory::where('societe_id', '=', Auth::user()->societe_id)->orderBy('order')->get();*/
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param SousCategoryCreateRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(SousCategoryCreateRequest $request)
@@ -48,13 +48,11 @@ class SousCategoryController extends Controller
         $param = $request->all();
         $param['societe_id'] = Auth::user()->societe_id;
         $res = SousCategory::create($param);
-
         if ($res) {
             $this->saveHistorique('store', $request->all());
-
-            return response()->json(['data' => $res->format(), 'message' => 'SousCategorie cree avec succee'], 200);
+            return response()->json(['data' => $res->format(), 'message' => 'Sous categorie cree avec succee'], 200);
         } else {
-            return response()->json(['error' => 'Echec creation SousCategorie'], 400);
+            return response()->json(['error' => 'Echec creation Sous categorie'], 400);
         }
 
     }
@@ -62,7 +60,7 @@ class SousCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param SousCategory $sousCategory
      * @return \Illuminate\Http\Response
      */
     public function show(SousCategory $sousCategory)
@@ -75,34 +73,31 @@ class SousCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param SousCategoryCreateRequest $request
+     * @param SousCategory $sousCategory
      * @return \Illuminate\Http\Response
      */
     public function update(SousCategoryCreateRequest $request, SousCategory $sousCategory)
     {
         $this->authorize('update', $sousCategory);
         $res = $sousCategory->update($request->all());
-
         if ($res) {
             $this->saveHistorique('update', $request->all());
             return response()->json(['data' => $sousCategory->format(), 'message' => 'SousCategorie cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation SousCategorie'], 400);
         }
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param SousCategory $sousCategory
      * @return \Illuminate\Http\Response
      */
     public function destroy(SousCategory $sousCategory)
     {
         $this->authorize('destroy', $sousCategory);
-
         $res = $sousCategory->delete();
         if ($res) {
             $this->saveHistorique('destroy', $sousCategory->id);
@@ -115,7 +110,15 @@ class SousCategoryController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
-        $contenu=$action_contenu;
+        if (isset($action_contenu['description'])) {
+            $contenu["Description"] = $action_contenu['description'];
+        }
+        if (isset($action_contenu['nom'])) {
+            $contenu["Nom"] = $action_contenu['nom'];
+        }
+        if (isset($action_contenu['order'])) {
+            $contenu["Ordre"] = $action_contenu['order'];
+        }
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,

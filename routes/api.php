@@ -64,6 +64,8 @@ Route::group([
     Route::post('societeMapSearch', [SocieteSearchController::class, 'societeMapSearch']);
     Route::get('societes/{societe}', [SocieteController::class, 'show']);
     Route::resource('newProduitSearch', NewProduitSearchController::class);
+    Route::get('newProduits/{newProduit}', [NewProduitController::class, 'show']);
+    Route::get('roues/{roue}', [RoueController::class, 'show']);
 
 });
 Route::group([
@@ -118,7 +120,9 @@ Route::group([
 // Localites route
         Route::resource('localites', LocaliteConroller::class);
 // roue route
-        Route::resource('roues', RoueController::class);
+        Route::resource('roues', RoueController::class)->except('show');
+        Route::get('roue/current', [RoueController::class, 'getCurrentRoue']);
+
 // roueElement route
         Route::resource('roueElements', RoueElementController::class);
 // category route
@@ -131,6 +135,6 @@ Route::group([
         Route::resource('sousCategorySearch', SousCategorySearchController::class);
 
 // new produit route
-        Route::resource('newProduits', NewProduitController::class);
+        Route::resource('newProduits', NewProduitController::class)->except('show');
 
     });

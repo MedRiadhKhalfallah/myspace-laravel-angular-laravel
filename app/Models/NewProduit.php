@@ -23,7 +23,16 @@ class NewProduit extends Model
         'modele_id',
         'image_name',
         'image_path',
-        'selectedFile'
+        'selectedFile',
+        'reference',
+        'paiement_facilite_3_mois',
+        'paiement_facilite_6_mois',
+        'paiement_facilite_12_mois',
+        'prix_achat',
+        'prix_sold',
+        'url_externe',
+        'etat_produit',
+        'etat'
     ];
 
     /**
@@ -76,7 +85,17 @@ class NewProduit extends Model
             'modele' => $this->modele,
             'id' => $this->id,
             'image_name' => $this->image_name,
-            'image_path' => $this->image_path
+            'image_path' => $this->image_path,
+            'reference'=> $this->reference,
+            'paiement_facilite_3_mois'=> $this->paiement_facilite_3_mois,
+            'paiement_facilite_6_mois'=> $this->paiement_facilite_6_mois,
+            'paiement_facilite_12_mois'=> $this->paiement_facilite_12_mois,
+            'prix_achat'=> $this->prix_achat,
+            'prix_sold'=> $this->prix_sold,
+            'url_externe'=> $this->url_externe,
+            'etat_produit'=> $this->etat_produit,
+            'etat'=> $this->etat
+
         ];
 
     }
@@ -90,7 +109,16 @@ class NewProduit extends Model
             'modele' => $this->modele->format(),
             'id' => $this->id,
             'image_name' => $this->image_name,
-            'image_path' => $this->image_path
+            'image_path' => $this->image_path,
+            'reference'=> $this->reference,
+            'paiement_facilite_3_mois'=> $this->paiement_facilite_3_mois,
+            'paiement_facilite_6_mois'=> $this->paiement_facilite_6_mois,
+            'paiement_facilite_12_mois'=> $this->paiement_facilite_12_mois,
+            'prix_achat'=> $this->prix_achat,
+            'prix_sold'=> $this->prix_sold,
+            'url_externe'=> $this->url_externe,
+            'etat_produit'=> $this->etat_produit,
+            'etat'=> $this->etat
         ];
 
     }

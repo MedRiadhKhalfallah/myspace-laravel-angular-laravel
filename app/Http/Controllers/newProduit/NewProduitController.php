@@ -81,9 +81,7 @@ class NewProduitController extends Controller
      */
     public function show(NewProduit $newProduit)
     {
-        $this->authorize('show', $newProduit);
         return $newProduit;
-
     }
 
     /**

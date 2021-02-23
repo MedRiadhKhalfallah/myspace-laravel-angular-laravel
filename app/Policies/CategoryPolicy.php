@@ -28,7 +28,6 @@ class CategoryPolicy
             return true;
         } else {
             return false;
-
         }
     }
 
@@ -40,7 +39,6 @@ class CategoryPolicy
     public function update(User $user, Category $category)
     {
         $isadmin = $user->hasRole('admin');
-//        $isadminSociete=$user->hasRole('admin_societe');
         $appartientSociete = $user->societe_id == $category->societe_id;
         return $appartientSociete || $isadmin;
     }

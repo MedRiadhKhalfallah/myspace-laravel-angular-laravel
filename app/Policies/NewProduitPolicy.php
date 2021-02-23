@@ -15,6 +15,7 @@ class NewProduitPolicy
         if ($user->hasRole('admin')) {
             return true;
         }
+        return false;
     }
 
     public function index(User $user)
@@ -32,15 +33,9 @@ class NewProduitPolicy
         }
     }
 
-    public function show(User $user, NewProduit $newProduit)
-    {
-        return true;
-    }
-
     public function update(User $user, NewProduit $newProduit)
     {
         $isadmin = $user->hasRole('admin');
-//        $isadminSociete=$user->hasRole('admin_societe');
         $appartientSociete = $user->societe_id == $newProduit->societe_id;
         return $appartientSociete || $isadmin;
     }

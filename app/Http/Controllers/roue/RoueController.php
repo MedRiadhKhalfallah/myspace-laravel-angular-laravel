@@ -29,6 +29,15 @@ class RoueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getCurrentRoue()
+    {
+        return Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $this->authorize('index', Roue::class);
@@ -47,7 +56,6 @@ class RoueController extends Controller
         $this->authorize('store', Roue::class);
         $param = $request->all();
         $param['societe_id'] = Auth::user()->societe_id;
-        $param['createur_id'] = Auth::user()->id;
         $res = Roue::create($param);
 
         if ($res) {
@@ -68,8 +76,7 @@ class RoueController extends Controller
      */
     public function show(Roue $roue)
     {
-        $this->authorize('show', $roue);
-        return $roue;
+        return $roue->format();
 
     }
 
@@ -116,8 +123,8 @@ class RoueController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
-/*        $contenu["Nom d'état"]=$action_contenu['nom'];
-        $contenu["Ordre d'état"]=$action_contenu['order'];*/
+        $contenu["état"]=$action_contenu['etat'];
+        $contenu["game Over Text"]=$action_contenu['gameOverText'];
         $contenu=$action_contenu;
         $this->historiqueController->store(
             [

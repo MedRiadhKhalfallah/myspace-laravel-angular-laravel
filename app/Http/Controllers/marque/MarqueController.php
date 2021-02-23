@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\marque;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\historique\HistoriqueController;
 use App\Http\Requests\MarqueCreateRequest;
 use App\Image;
 use App\Models\Marque;
@@ -12,9 +13,13 @@ use JWTAuth;
 class MarqueController extends Controller
 {
     protected $user;
+    /** @var HistoriqueController */
+    protected $historiqueController;
+    const CONTROLLER_NAME = 'SousCategorie';
 
-    public function __construct()
+    public function __construct(HistoriqueController $historiqueController)
     {
+        $this->historiqueController = new HistoriqueController();
         if (JWTAuth::getToken()) {
             $this->user = JWTAuth::parseToken()->authenticate();
         }
@@ -39,6 +44,7 @@ class MarqueController extends Controller
      */
     public function store(MarqueCreateRequest $request)
     {
+        $this->authorize('store', Marque::class);
         if (Marque::isExiste($request) !== false) {
             return Marque::isExiste($request);
         }
@@ -60,20 +66,12 @@ class MarqueController extends Controller
             ]);
 
             if ($res) {
+                $this->saveHistorique('store', $request->all());
                 return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
             } else {
                 return response()->json(['error' => 'Echec creation utilisateur'], 400);
             }
-
         }
-
-/*        if ($request->file('selectedFile')) {
-            foreach ($request->file('selectedFile') as $selectedFile) {
-                $selectedFile->store("public");
-            }
-//            $file = $request->file('selectedFile')->store("public");
-        }*/
-
     }
 
     /**
@@ -84,6 +82,7 @@ class MarqueController extends Controller
      */
     public function show(Marque $marque)
     {
+        $this->authorize('show', $marque);
         return $marque;
 
     }
@@ -97,6 +96,7 @@ class MarqueController extends Controller
      */
     public function update(MarqueCreateRequest $request, Marque $marque)
     {
+        $this->authorize('update', $marque);
         $updateData=[];
         if ($request->hasFile('selectedFile')) {
             $fileNameExtension = $request->file('selectedFile')->getClientOriginalName();
@@ -114,21 +114,11 @@ class MarqueController extends Controller
         $res = $marque->update($updateData);
 
             if ($res) {
+                $this->saveHistorique('update', $request->all());
                 return response()->json(['message' => 'Utilisateur cree avec succee'], 200);
             } else {
                 return response()->json(['error' => 'Echec creation utilisateur'], 400);
             }
-
-
-
-
-/*        $res = $marque->update($request->all());
-        if ($res) {
-            return response()->json(['message' => 'Utilisateur modifier avec succee'], 200);
-        } else {
-            return response()->json(['error' => 'Echec modification utilisateur'], 400);
-        }*/
-
     }
 
     /**
@@ -141,13 +131,29 @@ class MarqueController extends Controller
     {
         // delete foreign entity
 //        $marque->modeles->each->delete();
-
+        $this->authorize('destroy', $marque);
         $res = $marque->delete();
         if ($res) {
+            $this->saveHistorique('destroy', $marque->id);
             return response()->json(['message' => 'Utilisateur modifier avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec modification utilisateur'], 400);
         }
 
     }
+
+    private function saveHistorique($action, $action_contenu)
+    {
+        if (isset($action_contenu['nom'])) {
+            $contenu["Nom"] = $action_contenu['nom'];
+        }
+        $this->historiqueController->store(
+            [
+                'controller' => $this::CONTROLLER_NAME,
+                'action' => $action,
+                'action_contenu' => $contenu,
+            ]
+        );
+    }
+
 }

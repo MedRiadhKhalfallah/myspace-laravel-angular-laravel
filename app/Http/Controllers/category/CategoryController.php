@@ -32,8 +32,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', Category::class);
-        return Category::where('societe_id', '=', Auth::user()->societe_id)->orderBy('order')->get();
+/*        $this->authorize('index', Category::class);
+        return Category::where('societe_id', '=', Auth::user()->societe_id)->orderBy('order')->get();*/
     }
 
     /**
@@ -44,40 +44,35 @@ class CategoryController extends Controller
      */
     public function store(CategoryCreateRequest $request)
     {
-
         $this->authorize('store', Category::class);
         $param = $request->all();
         $param['societe_id'] = Auth::user()->societe_id;
         $res = Category::create($param);
-
         if ($res) {
             $this->saveHistorique('store', $request->all());
-
             return response()->json(['data' => $res->format(), 'message' => 'Categorie cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation Categorie'], 400);
         }
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
     {
         $this->authorize('show', $category);
         return $category;
-
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryCreateRequest $request, Category $category)
@@ -97,13 +92,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)
     {
         $this->authorize('destroy', $category);
-
         $res = $category->delete();
         if ($res) {
             $this->saveHistorique('destroy', $category->id);
@@ -116,7 +110,15 @@ class CategoryController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
-        $contenu=$action_contenu;
+        if (isset($action_contenu['description'])) {
+            $contenu["Description"] = $action_contenu['description'];
+        }
+        if (isset($action_contenu['nom'])) {
+            $contenu["Nom"] = $action_contenu['nom'];
+        }
+        if (isset($action_contenu['order'])) {
+            $contenu["Ordre"] = $action_contenu['order'];
+        }
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,

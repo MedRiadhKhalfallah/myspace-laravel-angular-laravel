@@ -4,6 +4,7 @@ namespace App\Http\Controllers\roueElement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\historique\HistoriqueController;
+use App\Models\Roue;
 use App\Models\RoueElement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,8 @@ class RoueElementController extends Controller
     public function index()
     {
         $this->authorize('index', RoueElement::class);
-        return RoueElement::where('societe_id', '=', Auth::user()->societe_id)->orderBy('order')->get();
+        $roue=Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
+        return RoueElement::where('roue_id', '=', $roue->id)->get();
     }
 
     /**
@@ -46,14 +48,15 @@ class RoueElementController extends Controller
 
         $this->authorize('store', RoueElement::class);
         $param = $request->all();
-        $param['societe_id'] = Auth::user()->societe_id;
-        $param['createur_id'] = Auth::user()->id;
+        $roue=Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
+        $param['roue_id'] = $roue->id;
+        $param['type'] = "string";
         $res = RoueElement::create($param);
 
         if ($res) {
             $this->saveHistorique('store', $request->all());
 
-            return response()->json(['data' => $res->format(), 'message' => 'RoueElement cree avec succee'], 200);
+            return response()->json(['data' => $res, 'message' => 'RoueElement cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation RoueElement'], 400);
         }
@@ -87,7 +90,7 @@ class RoueElementController extends Controller
 
         if ($res) {
             $this->saveHistorique('update', $request->all());
-            return response()->json(['data' => $roueElement->format(), 'message' => 'RoueElement cree avec succee'], 200);
+            return response()->json(['data' => $roueElement, 'message' => 'RoueElement cree avec succee'], 200);
         } else {
             return response()->json(['error' => 'Echec creation RoueElement'], 400);
         }
