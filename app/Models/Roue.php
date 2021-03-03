@@ -27,6 +27,14 @@ class Roue extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function roueElements()
     {
         return $this->hasMany(RoueElement::class);
@@ -77,11 +85,20 @@ class Roue extends Model
             'hasSound' => $this->hasSound,
             'clickToSpin' => $this->clickToSpin,
             'segmentValuesArray' => $this->roueElements,
+            'etat' => $this->etat,
             'colorArray' => $colorArray,
             'gameId' => '9a0232ec06bc431114e2a7f3aea03bbe2164f1aa',
             'spinDestinationArray' => [],
             'segmentStrokeColor' => '#E2E2E2',
         ];
+    }
+    /**
+     * @return array
+     */
+    public function formatClient()
+    {
+
+        return $this->clients;
     }
 
 }

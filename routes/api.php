@@ -37,7 +37,8 @@ use \App\Http\Controllers\newProduit\NewProduitController;
 use \App\Http\Controllers\category\CategorySearchController;
 use \App\Http\Controllers\sousCategory\SousCategorySearchController;
 use \App\Http\Controllers\newProduit\NewProduitSearchController;
-
+use \App\Http\Controllers\client\ClientController;
+use \App\Http\Controllers\client\ClientSearchController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -66,6 +67,10 @@ Route::group([
     Route::resource('newProduitSearch', NewProduitSearchController::class);
     Route::get('newProduits/{newProduit}', [NewProduitController::class, 'show']);
     Route::get('roues/{roue}', [RoueController::class, 'show']);
+// client route
+    Route::resource('clients', ClientController::class);
+    Route::post('verification-client', [ClientController::class, 'VerificationClient']);
+    Route::post('end-game', [ClientController::class, 'endGame']);
 
 });
 Route::group([
@@ -136,5 +141,8 @@ Route::group([
 
 // new produit route
         Route::resource('newProduits', NewProduitController::class)->except('show');
+//client
+        Route::resource('clientSearch', ClientSearchController::class);
+        Route::post('videCadeaux', [ClientController::class, 'videCadeaux']);
 
     });

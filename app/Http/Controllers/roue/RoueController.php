@@ -76,7 +76,12 @@ class RoueController extends Controller
      */
     public function show(Roue $roue)
     {
-        return $roue->format();
+        $roueFormat=$roue->format();
+        if($roueFormat['etat']=='true'){
+            return $roue->format();
+        }else{
+            return response()->json(['error' => "la roue n'est pas activée"], 400);
+        }
 
     }
 
