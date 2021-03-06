@@ -5,6 +5,7 @@ namespace App\Http\Controllers\marque;
 
 
 use App\Models\Marque;
+use Illuminate\Database\Query\Builder;
 
 class MarqueRepository
 {
@@ -19,6 +20,7 @@ class MarqueRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
+        /** @var Builder $qr */
         $qr = Marque::orderBy('id');
 //        return $criteria;
         foreach ($criteria as $key => $value) {

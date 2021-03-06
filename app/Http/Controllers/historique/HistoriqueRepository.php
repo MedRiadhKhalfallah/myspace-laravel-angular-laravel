@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\historique;
 
 use App\Models\Historique;
+use Illuminate\Database\Query\Builder;
 
 class HistoriqueRepository
 {
@@ -16,7 +17,7 @@ class HistoriqueRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
+        /** @var Builder $qr */
         $qr = Historique::orderBy('created_at','DESC');
         foreach ($criteria as $key => $value) {
             if ($value != null) {

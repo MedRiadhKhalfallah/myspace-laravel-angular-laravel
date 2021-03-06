@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\delegation;
 
 use App\Models\Delegation;
+use Illuminate\Database\Query\Builder;
 
 class DelegationRepository
 {
@@ -17,7 +18,7 @@ class DelegationRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
+        /** @var Builder $qr */
         $qr = Delegation::orderBy('nom');
         foreach ($criteria as $key => $value) {
             if ($value != null) {

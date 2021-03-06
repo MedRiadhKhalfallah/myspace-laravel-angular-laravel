@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 
 
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 
 class UserRepository
 {
@@ -20,6 +21,7 @@ class UserRepository
             $this->limit = $criteria['limit'];
         }
 
+        /** @var Builder $qr */
         $qr = User::with('roles')->orderBy('id');
         foreach ($criteria as $key => $value) {
             if ($value != null) {

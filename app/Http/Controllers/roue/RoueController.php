@@ -33,6 +33,7 @@ class RoueController extends Controller
     {
         return Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -76,10 +77,10 @@ class RoueController extends Controller
      */
     public function show(Roue $roue)
     {
-        $roueFormat=$roue->format();
-        if($roueFormat['etat']=='true'){
+        $roueFormat = $roue->format();
+        if ($roueFormat['etat']=='true') {
             return $roue->format();
-        }else{
+        } else {
             return response()->json(['error' => "la roue n'est pas activée"], 400);
         }
 
@@ -128,9 +129,9 @@ class RoueController extends Controller
 
     private function saveHistorique($action, $action_contenu)
     {
-        $contenu["état"]=$action_contenu['etat'];
-        $contenu["game Over Text"]=$action_contenu['gameOverText'];
-        $contenu=$action_contenu;
+        $contenu["état"] = $action_contenu['etat'];
+        $contenu["game Over Text"] = $action_contenu['gameOverText'];
+        $contenu = $action_contenu;
         $this->historiqueController->store(
             [
                 'controller' => $this::CONTROLLER_NAME,

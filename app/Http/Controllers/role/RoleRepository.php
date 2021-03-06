@@ -5,6 +5,7 @@ namespace App\Http\Controllers\role;
 
 
 use App\Models\Role;
+use Illuminate\Database\Query\Builder;
 
 class RoleRepository
 {
@@ -19,7 +20,7 @@ class RoleRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
+        /** @var Builder $qr */
         $qr = Role::orderBy('name');
 //        return $criteria;
         foreach ($criteria as $key => $value) {

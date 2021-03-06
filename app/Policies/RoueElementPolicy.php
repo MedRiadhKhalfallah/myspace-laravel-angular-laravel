@@ -17,14 +17,19 @@ class RoueElementPolicy
         }
     }
 
-    public function index(User $user, RoueElement $roueElement)
+    public function index(User $user)
     {
         return $user->hasRole('admin_societe');
     }
 
     public function store(User $user)
     {
-        return !$user->societe_id;
+        if ($user->societe_id) {
+            return true;
+        } else {
+            return false;
+
+        }
     }
 
     public function show(User $user, RoueElement $roueElement)

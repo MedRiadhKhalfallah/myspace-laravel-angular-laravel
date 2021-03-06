@@ -53,7 +53,7 @@ class ClientController extends Controller
             ['num_tel', '=', $param['num_tel']]
         ])->first();
         if ($client) {
-            return response()->json(['data' => $client, 'message' => 'u can play'], 200);
+            return response()->json(['data' => $client->format(), 'message' => 'u can play'], 200);
         } else {
             return response()->json(['error' => false, 'message' => 'u cant play'], 400);
         }
@@ -110,7 +110,7 @@ class ClientController extends Controller
         } else {
             $res = Client::create($param);
             if ($res) {
-                $this->saveHistorique('store', $request->all());
+//                $this->saveHistorique('store', $request->all());
 
                 return response()->json(['data' => $res->format(), 'message' => 'Client cree avec succee'], 200);
             } else {
@@ -133,6 +133,7 @@ class ClientController extends Controller
         /** @var Roue $roue */
         $roue = Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
         $clients = $roue->clients;
+        $res = true;
         foreach ($clients as $client) {
             $res = $client->update(['value1' => null, 'value2' => null]);
         }

@@ -1,7 +1,12 @@
 <?php
+
 namespace App\Http\Controllers\client;
 
 use App\Models\Client;
+use App\Models\Roue;
+use App\Models\RoueElement;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ClientRepository
 {
@@ -18,6 +23,9 @@ class ClientRepository
             $this->limit = $criteria['limit'];
         }
 
+        $roue = Roue::where('societe_id', '=', Auth::user()->societe_id)->first();
+        $criteria['roue_id'] = $roue->id;
+        /** @var Builder $qr */
         $qr = Client::orderBy('nom');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
@@ -25,20 +33,25 @@ class ClientRepository
                     case 'nom':
                         $qr->where('nom', 'like', '%' . $value . '%');
                         break;
-                    case 'value1':
-                        $qr->where('value1', '=', $value);
-                        break;
-                    case 'value2':
-                        $qr->where('value2', '=', $value);
+                    case 'value':
+                        $qr->where(function ($query) use ($value) {
+                            $query->where('value1', '=', $value)
+                                ->orWhere('value2', '=', $value);
+                        });
                         break;
                     case 'num_tel':
                         $qr->where('num_tel', '=', $value);
                         break;
+                    case 'roue_id':
+                        $qr->where('roue_id', '=', $value);
+                        break;
+
                 }
 
             }
         }
-        return $qr->offset($this->offset)->limit($this->limit)->get()
-            ->map->format();
+        return $qr->get()->map->format();
+        /*        return $qr->offset($this->offset)->limit($this->limit)->get()
+                    ->map->format();*/
     }
 }

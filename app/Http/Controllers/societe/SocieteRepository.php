@@ -3,6 +3,7 @@ namespace App\Http\Controllers\societe;
 
 use App\Models\Produit;
 use App\Models\Societe;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,7 @@ class SocieteRepository
             $this->limit = $criteria['limit'];
         }
 
+        /** @var Builder $qr */
         $qr = Societe::orderBy('nom');
         foreach ($criteria as $key => $value) {
             if ($value != null) {
@@ -45,6 +47,7 @@ class SocieteRepository
     public function societeTopSearch($criteria){
 
         $criteria['date_fin_abonnement']=date('y-m-d');
+        /** @var Builder $qr */
         $qr = Societe::leftJoin('produits', 'produits.societe_id', '=', 'societes.id');
 
         foreach ($criteria as $key => $value) {
@@ -70,7 +73,7 @@ class SocieteRepository
     }
 
     public function societeMapSearch($criteria){
-
+        /** @var Builder $qr */
         $qr = Societe::orderBy('nom');
         $criteria['date_fin_abonnement']=date('y-m-d');
         foreach ($criteria as $key => $value) {

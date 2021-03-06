@@ -3,6 +3,7 @@ namespace App\Http\Controllers\produit;
 
 use App\Models\Produit;
 use App\Models\Societe;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class ProduitRepository
@@ -18,7 +19,7 @@ class ProduitRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
+        /** @var Builder $qr */
 //        $qr = Produit::orderBy('nom');
         $qr = Produit::with('societe')->orderBy('id','DESC');
         foreach ($criteria as $key => $value) {
@@ -47,7 +48,7 @@ class ProduitRepository
 
     public function searchProduitsByEtat($criteria)
     {
-
+        /** @var Builder $qr */
         $qr = Produit::leftJoin('etats', 'etats.id', '=', 'produits.etat_id');
         foreach ($criteria as $key => $value) {
             if ($value != null) {

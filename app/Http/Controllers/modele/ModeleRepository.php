@@ -5,6 +5,7 @@ namespace App\Http\Controllers\modele;
 
 
 use App\Models\Modele;
+use Illuminate\Database\Query\Builder;
 
 class ModeleRepository
 {
@@ -19,7 +20,7 @@ class ModeleRepository
         if (isset($criteria['limit']) && $criteria['limit'] < 50) {
             $this->limit = $criteria['limit'];
         }
-
+        /** @var Builder $qr */
         $qr = Modele::orderBy('nom');
         foreach ($criteria as $key => $value) {
             if ($value != null) {

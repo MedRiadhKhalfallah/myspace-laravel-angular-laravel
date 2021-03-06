@@ -40,6 +40,9 @@ class Client extends Model
     }
     public function format()
     {
+        /** @var Societe $societe */
+        $societe=$this->roue->societe;
+        $societeImg=$societe->image_societe_path;
         return [
             'id' => $this->id,
             'nom' => $this->nom,
@@ -47,7 +50,8 @@ class Client extends Model
             'num_tel' => $this->num_tel,
             'email' => $this->email,
             'value1' => $this->value1,
-            'value2' => $this->value2
+            'value2' => $this->value2,
+            'societeImg' => $societeImg
         ];
     }
 

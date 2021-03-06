@@ -24,7 +24,12 @@ class RouePolicy
 
     public function store(User $user)
     {
-        return !$user->societe_id;
+        if ($user->societe_id) {
+            return true;
+        } else {
+            return false;
+
+        }
     }
 
     public function show(User $user, Roue $roue)

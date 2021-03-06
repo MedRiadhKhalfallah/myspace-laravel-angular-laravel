@@ -39,6 +39,7 @@ use \App\Http\Controllers\sousCategory\SousCategorySearchController;
 use \App\Http\Controllers\newProduit\NewProduitSearchController;
 use \App\Http\Controllers\client\ClientController;
 use \App\Http\Controllers\client\ClientSearchController;
+use \App\Http\Controllers\roueElement\RoueElementSearchController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -65,6 +66,7 @@ Route::group([
     Route::post('societeMapSearch', [SocieteSearchController::class, 'societeMapSearch']);
     Route::get('societes/{societe}', [SocieteController::class, 'show']);
     Route::resource('newProduitSearch', NewProduitSearchController::class);
+    Route::post('newProduitSocieteSearch', [NewProduitSearchController::class, 'newProduitSocieteSearch']);
     Route::get('newProduits/{newProduit}', [NewProduitController::class, 'show']);
     Route::get('roues/{roue}', [RoueController::class, 'show']);
 // client route
@@ -86,8 +88,8 @@ Route::group([
 //    Route::resource('users', UserController::class)->middleware('role:admin|utilisateur');
         Route::resource('marques', MarqueController::class);
         Route::resource('modeles', ModeleController::class);
-        Route::resource('modeleSearch', ModeleSearchController::class)->middleware('role:admin');
-        Route::resource('marqueSearch', MarqueSearchController::class)->middleware('role:admin');
+        Route::resource('modeleSearch', ModeleSearchController::class);
+        Route::resource('marqueSearch', MarqueSearchController::class);
         Route::resource('profile', ProfileController::class);
         Route::resource('roles', RoleController::class)->middleware('role:admin');
         Route::resource('roleSearch', RoleSearchController::class)->middleware('role:admin');
@@ -130,6 +132,8 @@ Route::group([
 
 // roueElement route
         Route::resource('roueElements', RoueElementController::class);
+        Route::resource('roueElementSearch', RoueElementSearchController::class);
+
 // category route
 
         Route::resource('categories', CategoryController::class);

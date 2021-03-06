@@ -15,7 +15,6 @@ class NewProduitPolicy
         if ($user->hasRole('admin')) {
             return true;
         }
-        return false;
     }
 
     public function index(User $user)
